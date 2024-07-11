@@ -4,8 +4,12 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import ReactPaginate from "react-paginate";
 import DefaultBanner from "../../assets/images/default-banner.jpg";
+import { TfiAgenda } from "react-icons/tfi";
+import { FaFilePdf } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 function AllEvent() {
+  const authToken = useSelector(state => state.auth.token);
   const [loading, setLoading] = useState(true);
   const [events, setEvents] = useState([]);
   const [filteredEvents, setFilteredEvents] = useState([]);
@@ -19,9 +23,30 @@ function AllEvent() {
 
   const itemsPerPage = 3;
 
+  const generatePDF = (uuid, pdfPath) => {
+    setLoading(true)
+    axios.get(`/api/generatePDF/${uuid}`)
+      .then(res => {
+        if(res.data.status === 200){
+          setLoading(false)
+          const url = imageBaseUrl + res.data.data.pdf_path;
+          window.open(url, '_blank');
+          
+        }
+        
+      })
+  }
+
   useEffect(() => {
-    axios.get("/api/events").then((res) => {
+    axios.post("/api/eventslist", {
+      headers: {
+        'Authorization': `Bearer ${authToken}`,
+        'Content-Type': 'application/json'
+        
+      }
+    }).then((res) => {
       if (res.data.status === 200) {
+        console.log(res.data.data)
         setEvents(res.data.data);
       }
       setLoading(false);
@@ -126,8 +151,8 @@ function AllEvent() {
             {item.image ? (
               <img
                 src={imageBaseUrl + item.image}
-                width="320"
-                height="180"
+                width="100"
+                height="80"
                 alt={item.title}
                 style={{
                   borderRadius: "20px",
@@ -138,8 +163,8 @@ function AllEvent() {
             ) : (
               <img
                 src={DefaultBanner}
-                width="320"
-                height="180"
+                width="100"
+                height="80"
                 alt="defaultBanner"
                 style={{
                   borderRadius: "20px",
@@ -150,7 +175,7 @@ function AllEvent() {
             )}
           </td>
           <td style={{ padding: "14px 4px" }}>{item.title}</td>
-          <td>
+          <td colSpan={2}>
             <span>
               <b>Date of Event : </b>
               {item.event_date}
@@ -168,7 +193,7 @@ function AllEvent() {
             </span>
             <br />
           </td>
-          <td>
+          <td colSpan={2}>
             <span>
               <b>Total Attendee : </b>
               {item.total_attendee}
@@ -243,6 +268,34 @@ function AllEvent() {
             >
               <i class="fas fa-edit"></i>
             </Link>
+            &nbsp; &nbsp;
+
+            <br />
+            
+            <Link
+              to={`all-agenda/${item.uuid}`}
+              data-toggle="tooltip"
+              data-placement="bottom"
+              title="Add Agenda"
+              className="btn btn-sm btn-success btn-circle mt-2"
+              style={{ borderRadius: "50%" }}
+            >
+              <TfiAgenda className="mb-1" />
+            </Link>
+
+            &nbsp; &nbsp;
+
+            <button
+              // to={`all-agenda/${item.uuid}`}
+              onClick={() => {generatePDF(item.uuid, item.pdf_path)}}
+              data-toggle="tooltip"
+              data-placement="bottom"
+              title="GeneratePdf"
+              className="btn btn-sm btn-circle mt-2"
+              style={{ borderRadius: "50%", background: 'purple', color: 'white' }}
+            >
+              <FaFilePdf className="mb-1" />
+            </button>
             &nbsp; &nbsp;
             <button
               data-toggle="tooltip"
@@ -371,8 +424,8 @@ function AllEvent() {
                     <th>Event-ID</th>
                     <th>Event Image</th>
                     <th>Event Name</th>
-                    <th>Event Details</th>
-                    <th>Attendee Details</th>
+                    <th colSpan={2}>Event Details</th>
+                    <th colSpan={2}>Attendee Details</th>
                     <th>Status</th>
                     <th>Action</th>
                   </tr>

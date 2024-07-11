@@ -7,25 +7,26 @@ import axios from "axios";
 import swal from "sweetalert";
 import Defaultuser from "../../assets/images/defaultuser.png";
 
-function ViewAttendee() {
+function ViewAgenda() {
   // const history = useHistory();
+//   const navigate = useNavigate();
 
   //Attendee ID
   const id = useParams().id;
-  console.log(id)
 
   const imageBaseUrl = process.env.REACT_APP_API_URL;
 
-  const [user, setUser] = useState(null);
+  const [agenda, setAgenda] = useState(null);
 
   const [eventId, setEventId] = useState(null);
   
   // const [eventdate, setEventDate] = useState({});
 
   useEffect(() => {
-    axios.post(`/api/attendees/${id}`).then((res) => {
+    axios.get(`/api/agendas/${id}`).then((res) => {
       if (res.data.status === 200) {
-        setUser(res.data.data);
+        setAgenda(res.data.data);
+        console.log(imageBaseUrl + res.data.data.image_path);
         setEventId(res.data.event_id);
       } else if (res.data.status === 400) {
         swal("Warning", res.data.message, "warning");
@@ -39,7 +40,7 @@ function ViewAttendee() {
     return str;
   };
 
-  if (!user) {
+  if (!agenda) {
     return <div>Loading...</div>;
   }
 
@@ -57,9 +58,10 @@ function ViewAttendee() {
           }}
         >
           <div className="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 className="h3 mb-0 text-gray-800">Attendee Details</h1>
-            <Link
-              to={`/admin/all-attendee/${eventId}`}
+            <h1 className="h3 mb-0 text-gray-800">Agenda Details</h1>
+            <button
+            //   to={`/admin/all-agendas/${uuid}`}
+            onClick={() => {window.history.back();}}
               className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
               style={{
                 backgroundColor: "#F5007E",
@@ -69,7 +71,7 @@ function ViewAttendee() {
               }}
             >
               <i class="fa fa-solid fa-arrow-left"></i> &nbsp; Go Back
-            </Link>
+            </button>
           </div>
         </div>
       </div>
@@ -83,11 +85,11 @@ function ViewAttendee() {
                 // style={{ borderRight: "2px solid #dbdbdb" }}
               >
                 <div className="image-container p-4">
-                  {user.image ? (
+                  {agenda.image_path ? (
                     <img
-                      src={imageBaseUrl + user.image}
+                      src={imageBaseUrl + agenda.image_path}
                       width="200"
-                      alt={user.image}
+                      alt={agenda.image_path}
                       style={{ borderRadius: "14px" }}
                     />
                   ) : (
@@ -102,88 +104,84 @@ function ViewAttendee() {
               </div>
 
               <div
-                className="col-12 col-md-12 col-lg-4 user-container p-4 right-border"
+                className="col-12 col-md-12 col-lg-8 user-container p-4 right-border"
                 // style={{ borderRight: "2px solid #dbdbdb" }}
               >
                 <p>
-                  <b>Name : </b>
-                  {capitalizeWord(user.first_name)}{" "}
-                  {capitalizeWord(user.last_name)}
+                  <b>Title : </b>
+                  {capitalizeWord(agenda.title)}
+                  {/* {" "}
+                  {capitalizeWord(agenda.last_name)} */}
                 </p>
                 <p>
-                  <b> Email ID : </b> {user.email_id}
+                  <b> Description : </b> {agenda.description}
                 </p>
                 <p>
-                  <b> Phone No : </b>
-                  {user.phone_number}
-                </p>
-
-                <p>
-                  <b> Alternate Phone No : </b>
-                  {user.alternate_mobile_number}
+                  <b> Event Date : </b>
+                  {agenda.event_date}
                 </p>
 
                 <p>
-                  <b> Attendee-Status : </b>
-                  {capitalizeWord(user.status)}
+                  <b> Event Time : </b>
+                  {agenda.start_time+ ':'+ agenda.start_minute_time + ' ' + agenda.start_time_type.toUpperCase() + ' ' + '-' + ' ' + agenda.end_time + ':'+ agenda.end_minute_time + ' ' +  agenda.end_time_type.toUpperCase()}
                 </p>
 
-                <p>
+                {/* <p>
                   <b>LinkedIn Profile Link: </b>
                 </p>
                 <p>
-                  {user.linkedin_page_link &&
-                    user.linkedin_page_link !== "null" && (
+                  {agenda.linkedin_page_link &&
+                    agenda.linkedin_page_link !== "null" && (
                       <a
-                        href={user.linkedin_page_link}
+                        href={agenda.linkedin_page_link}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        {user.linkedin_page_link}
+                        {agenda.linkedin_page_link}
                       </a>
                     )}
-                </p>
+                </p> */}
               </div>
 
-              <div className="col-12 col-md-12 col-lg-4 p-4">
+              {/* <div className="col-12 col-md-12 col-lg-4 p-4">
                 <p>
                   <b>Job Title : </b>
-                  {user.job_title}
+                  {agenda.job_title}
                 </p>
 
                 <p>
                   <b>Company Name : </b>
-                  {capitalizeWord(user.company_name)}
+                  {capitalizeWord(agenda.company_name)}
                 </p>
 
                 <p>
                   <b> Industry : </b>
-                  {capitalizeWord(user.industry)}
+                  {capitalizeWord(agenda.industry)}
                 </p>
 
                 <p>
                   <b> Website : </b>
-                  {user.website && user.website !== "null" && (
+                  {agenda.website && agenda.website !== "null" && (
                     <a
-                      href={user.website}
+                      href={agenda.website}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      {user.website}
+                      {agenda.website}
                     </a>
                   )}
                 </p>
 
                 <p>
                   <b>Employee Size: </b>
-                  {user.employee_size}
+                  {agenda.employee_size}
                 </p>
 
                 <p>
                   <b>Company Turn Over : </b>
-                  {user.company_turn_over}
+                  {agenda.company_turn_over}
                 </p>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -192,4 +190,4 @@ function ViewAttendee() {
   );
 }
 
-export default ViewAttendee;
+export default ViewAgenda;

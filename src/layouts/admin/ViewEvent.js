@@ -14,9 +14,9 @@ function ViewEvent() {
   const imageBaseUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    axios.get(`/api/display/${id}`).then((res) => {
+    axios.post(`/api/display/${id}`).then((res) => {
       if (res.data.status === 200) {
-        // console.log(res.data.data);
+        console.log(res.data.data);
         setEvent(res.data.data);
 
         // setEventDate(format(res.data.data.event_date, 'MMMM d, yyyy'));
@@ -24,7 +24,7 @@ function ViewEvent() {
       }
     });
 
-    axios.get(`/api/totalattendees/${id}`).then((res) => {
+    axios.post(`/api/totalattendees/${id}`).then((res) => {
       if (res.data.status === 200) {
         setAddendees(res.data.data);
       }
@@ -227,6 +227,13 @@ function ViewEvent() {
                       {", "} {event.state}
                       {", "} {event.country}
                       {", "} {event.pincode}
+                    </p>
+
+                    <h6 class="">
+                      <b>Google Map Link</b>{" "}
+                    </h6>
+                    <p>
+                      {event.google_map_link}
                     </p>
                   </div>
 

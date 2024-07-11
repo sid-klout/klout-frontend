@@ -33,6 +33,10 @@ import SendSmsAttendee from "../layouts/admin/SendSmsAttendee";
 import SendMailAttendee from "../layouts/admin/SendMailAttendee";
 import PrivacyPolicy from "../components/PrivacyPolicy";
 import TermsAndConditions from "../components/TermsAndConditions";
+import AllAgenda from "../layouts/admin/AllAgenda";
+import AddAgenda from "../layouts/admin/AddAgenda";
+import ViewAgenda from "../layouts/admin/ViewAgenda";
+import EditAgenda from "../layouts/admin/EditAgenda";
 
 const routes = [
   { path: "/admin", exact: true, name: "Admin", component: Dashboard },
@@ -239,6 +243,30 @@ const routes = [
     name: "Page404",
     component: Page404Dashboard,
   },
+  {
+    path: "/admin/all-agenda/:id",
+    exact: true,
+    name: "AllAgenda",
+    component: AllAgenda,
+  },
+  {
+    path: "/admin/add-agenda/:id",
+    exact: true,
+    name: "AddAgenda",
+    component: AddAgenda,
+  },
+  {
+    path: "/admin/view-agenda-details/:id",
+    exact: true,
+    name: "ViewAgenda",
+    component: ViewAgenda,
+  },
+  {
+    path: "/admin/edit-agenda/:id",
+    exact: true,
+    name: "EditAgenda",
+    component: EditAgenda,
+  }
 ];
 
 export default routes;

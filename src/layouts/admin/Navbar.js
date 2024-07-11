@@ -8,9 +8,12 @@ import Defaultuser from "../../assets/images/defaultuser.png";
 
 import { useDispatch } from "react-redux";
 import { logoutSuccess } from "../../authActions";
+import { useSelector } from "react-redux";
 
 
 function Navbar({ menuOpen, setMenuOpen, toggleMenu }) {
+
+  const authToken = useSelector(state => state.auth.token);
 
   const history = useHistory();
 
@@ -21,7 +24,11 @@ function Navbar({ menuOpen, setMenuOpen, toggleMenu }) {
   const [profile, setProfile] = useState([]);
 
   useEffect(() => {
-    axios.get(`/api/profile`).then((res) => {
+    axios.post(`/api/profile`, {
+      headers: {
+        Authorization: `Bearer ${authToken}`
+      }
+    }).then((res) => {
       if (res.data.status === 200) {
         setProfile(res.data.user);
       }

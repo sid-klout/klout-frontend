@@ -4,9 +4,12 @@ import swal from "sweetalert";
 import { useHistory, Link } from "react-router-dom";
 import loadingGif from "../../assets/images/load.gif";
 import Defaultuser from "../../assets/images/defaultuser.png";
+import { useSelector } from "react-redux";
 
 function EditAttendee(props) {
   const history = useHistory();
+
+  const authToken = useSelector(state => state.auth.token);
 
   const imageBaseUrl = process.env.REACT_APP_API_URL;
 
@@ -31,11 +34,17 @@ function EditAttendee(props) {
     address: "",
     pincode: "",
     image: null,
+    company_logo: null,
     new_image: null,
+    company_logo_new_image: null
   });
 
   useEffect(() => {
-    axios.get(`/api/profile`).then((res) => {
+    axios.post(`/api/profile`, {
+      headers: {
+        Authorization: `Bearer ${authToken}`
+      }
+    }).then((res) => {
       if (res.data.status === 200) {
         setFormInput(res.data.user);
 
@@ -181,6 +190,15 @@ function EditAttendee(props) {
     }));
   };
 
+  const handleLogoChange = (e) => {
+    const file = e.target.files[0];
+
+    setFormInput((prevData) => ({
+      ...prevData,
+      company_logo_new_image: file,
+    }));
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -290,7 +308,19 @@ function EditAttendee(props) {
       }
     }
 
+    if (formInput.company_logo_new_image !== "") {
+      const allowedFormats = ["image/jpeg", "image/png", "image/gif"];
+
+      if (formInput.company_logo_new_image) {
+        if (!allowedFormats.includes(formInput.company_logo_new_image.type)) {
+          fieldErrors.company_logo_new_image =
+            "Invalid file format. Only JPEG and PNG formats are allowed.";
+        }
+      }
+    }
+
     let image = {};
+    let company_logo = {};
 
     if (formInput.new_image !== "") {
       image = formInput.new_image;
@@ -298,10 +328,17 @@ function EditAttendee(props) {
       image = formInput.image;
     }
 
+    if (formInput.company_logo_new_image !== "") {
+      company_logo = formInput.company_logo_new_image;
+    } else {
+      company_logo = formInput.company_logo;
+    }
+
     if (Object.keys(fieldErrors).length === 0) {
       const formData = new FormData();
 
       formData.append("image", image);
+      formData.append("company_logo", company_logo);
       formData.append("first_name", formInput.first_name);
       formData.append("last_name", formInput.last_name);
       formData.append("designation", formInput.designation);
@@ -621,6 +658,7 @@ function EditAttendee(props) {
                         />
                       )}
                     </div>
+                    
                   </div>
 
                   {/* Company Name */}
@@ -692,6 +730,68 @@ function EditAttendee(props) {
                         )}
                       </div>
                     </div>
+                  </div>
+
+                  {/* compay logo  */}
+                  <div className="form-group row">
+                    <label
+                      forhtml="file"
+                      className="col-12 col-lg-2 col-form-label"
+                    >
+                      Company Logo
+                    </label>
+                    <div className="col-10 col-lg-5">
+                      <input
+                        type="file"
+                        className={`form-control ${
+                          errors.company_logo_new_image ? "is-invalid" : ""
+                        }`}
+                        name="file"
+                        onChange={handleLogoChange}
+                        onBlur={handleBlur}
+                      />
+
+                      {errors.company_logo_new_image && (
+                        <div
+                          className="invalid-feedback"
+                          style={{
+                            textAlign: "left",
+                          }}
+                        >
+                          {errors.company_logo_new_image}
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="col-10 col-lg-5 mt-3">
+                      {formInput.company_logo_new_image && (
+                        <img
+                          src={URL.createObjectURL(formInput.company_logo_new_image)}
+                          width="60%"
+                          alt="defaultUser"
+                          style={{ borderRadius: "4px", objectFit: "cover" }}
+                        />
+                      )}
+
+                      {formInput.company_logo && !formInput.company_logo_new_image && (
+                        <img
+                          src={imageBaseUrl + formInput.company_logo}
+                          width="60%"
+                          alt={formInput.company_logo}
+                          style={{ borderRadius: "4px", objectFit: "cover" }}
+                        />
+                      )}
+
+                      {!formInput.company_logo && !formInput.company_logo_new_image && (
+                        <img
+                          src={Defaultuser}
+                          width="60%"
+                          alt="defaultUser"
+                          style={{ borderRadius: "4px", objectFit: "cover" }}
+                        />
+                      )}
+                    </div>
+                    
                   </div>
 
                   {/* Job Title  */}

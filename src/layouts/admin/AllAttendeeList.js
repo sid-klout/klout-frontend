@@ -26,7 +26,7 @@ function AllAttendeeList(props) {
   const [event_id, setEventID] = useState(props.match.params.id);
 
   useEffect(() => {
-    axios.get("/api/totalattendeesOrganizer").then((res) => {
+    axios.post("/api/totalattendeesOrganizer").then((res) => {
       if (res.data.status == 200) {
         setAddendees(res.data.total_attendees);
         setFilteredAttendees(res.data.total_attendees);

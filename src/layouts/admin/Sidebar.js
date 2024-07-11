@@ -1,5 +1,5 @@
 import axios from "axios";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {
   BrowserRouter as Router,
   useHistory,
@@ -14,7 +14,7 @@ import Home from "../../components/Home";
 import AllEvent from "./AllEvent";
 import Swal from "sweetalert2";
 
-import { useDispatch } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
 import { logoutSuccess } from "../../authActions";
 
 // import Logo from "../../assets/img/klout_logo.png";
@@ -26,9 +26,28 @@ import Logo from "./../../assets/img/Klout-Club-whitelogo.png";
 import mobileLogo from "./../../assets/img/Klout-Club-whitelogo.png";
 
 function Sidebar({ menuOpen, setMenuOpen, toggleMenu }) {
+  const authToken = useSelector(state => state.auth.token);
   const history = useHistory();
+  const [logoPath, setLogoPath] = useState(null)
 
   const dispatch = useDispatch();
+
+
+
+  useEffect(() => {
+    axios.post(`/api/profile`, {
+      headers: {
+        Authorization: `Bearer ${authToken}`
+      }
+    }).then((res) => {
+      if (res.data.status === 200) {
+        console.log(res.data.user)
+        // setFormInput(res.data.user);
+        setLogoPath(res.data.user.company_logo)
+
+      }
+    });
+  }, []);
 
   //for mobile view
   const windowWidth = window.innerWidth;
@@ -92,9 +111,13 @@ function Sidebar({ menuOpen, setMenuOpen, toggleMenu }) {
           <div className="sidebar-brand-text mx-3">
             <img
               className="sidebar-card-illustration mb-2"
-              src={Logo}
+
+              style={{width: '150px', marginTop: '15px'}}
+              // src={logoPath? `https://api.klout.club/${logoPath}`: Logo}
+              src={logoPath? `https://api.klout.club/uploads/companylogo/1720532777.jpg`: Logo}
+
               alt="Klout Club"
-              // style={{
+              // style={{ 
               //   height: "60px",
               //   width: "100%",
               //   background: "#efefef",

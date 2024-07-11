@@ -26,7 +26,7 @@ function AllSponsors(props) {
   const [event_id, setEventID] = useState(props.match.params.id);
 
   useEffect(() => {
-    axios.get("/api/sponsors").then((res) => {
+    axios.post("/api/sponsorsList").then((res) => {
       if (res.data.status == 200) {
         setSponsors(res.data.data);
         setFilteredSponsors(res.data.data);

@@ -41,7 +41,7 @@ function EditAttendee(props) {
   });
 
   useEffect(() => {
-    axios.get(`/api/attendees/${user_id}`).then((res) => {
+    axios.post(`/api/attendees/${user_id}`).then((res) => {
       if (res.data.status === 200) {
         setEventId(res.data.data.event_id);
         setFormInput(res.data.data);

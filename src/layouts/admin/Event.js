@@ -57,6 +57,7 @@ function Event() {
     image: null,
     feedback: "1",
     status: "1",
+    google_map_link: "",
   });
 
   const handleStartDateChange = (date) => {
@@ -238,6 +239,8 @@ function Event() {
   };
 
   const handleSubmit = (e) => {
+    console.log(eventInput)
+
     e.preventDefault();
 
     const button = e.target;
@@ -268,16 +271,16 @@ function Event() {
       fieldErrors.description = "Maximum 3000 Characters Allowed.";
     }
 
-    if (!eventInput.image) {
-      fieldErrors.image = "Event Banner is required.";
-    } else {
-      const allowedFormats = ["image/jpeg", "image/png", "image/jpg"];
+    // if (!eventInput.image) {
+    //   fieldErrors.image = "Event Banner is required.";
+    // } else {
+    //   const allowedFormats = ["image/jpeg", "image/png", "image/jpg"];
 
-      if (!allowedFormats.includes(eventInput.image.type)) {
-        fieldErrors.image =
-          "Invalid file format. Only JPEG & PNG formats are allowed.";
-      }
-    }
+    //   if (!allowedFormats.includes(eventInput.image.type)) {
+    //     fieldErrors.image =
+    //       "Invalid file format. Only JPEG & PNG formats are allowed.";
+    //   }
+    // }
 
     if (
       eventInput.event_venue_name === "" ||
@@ -364,7 +367,9 @@ function Event() {
       fieldErrors.event_end_date = "End Date is Invalid";
     }
 
-    if (Object.keys(fieldErrors).length === 0) {
+    console.log(fieldErrors)
+
+    if (Object.keys(fieldErrors).length <= 0) {
       const formData = new FormData();
 
       formData.append("image", eventInput.image);
@@ -378,6 +383,7 @@ function Event() {
       formData.append("end_minute_time", eventInput.end_minute_time);
       formData.append("event_venue", eventInput.event_venue_name);
       formData.append("event_venue_name", eventInput.event_venue_name);
+      formData.append("google_map_link", eventInput.google_map_link);
       formData.append(
         "event_venue_address_1",
         eventInput.event_venue_address_1
@@ -885,6 +891,32 @@ function Event() {
                       )}
                     </div>
                   </div>
+                </div>
+              </div>
+
+              { /* Google Map Link  */ }
+
+              <div className="form-group row">
+                <label
+                  forhtml="title"
+                  className="col-12 col-lg-2 col-form-label"
+                >
+                  Google Map Link
+                </label>
+                <div className="col-10">
+                  <input
+                    type="text"
+                    className={`form-control`}
+                    placeholder="Google Map Link"
+                    onBlur={handleBlur}
+                    name="google_map_link"
+                    value={eventInput.google_map_link}
+                    onChange={handleInput}
+                    onFocus={handleInputFocus}
+                  />
+                  {/* <p style={{ fontSize: "12px", float: "right" }}>
+                    * Maximum 100 Characters Allowed.
+                  </p> */}
                 </div>
               </div>
 

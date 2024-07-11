@@ -5,8 +5,11 @@ import axios from "axios";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./EventCard.css";
+import { useSelector } from 'react-redux';
 
 function Dashboard() {
+
+  const authToken = useSelector(state => state.auth.token);
   
   const imageBaseUrl = process.env.REACT_APP_API_URL;
 
@@ -16,6 +19,7 @@ function Dashboard() {
   const [totalAttendees, setTotalAttendees] = useState(0);
   const [upcomingEvents, setUpcomingEvents] = useState(0);
   const [upcomingEventsData, setUpcomingEventsData] = useState([]);
+
 
   const settings = {
     dots: true,
@@ -41,7 +45,11 @@ function Dashboard() {
 
   useEffect(() => {
     axios
-      .get("/api/totalevents")
+      .post("/api/totalevents", {
+        headers: {
+          Authorization: `Bearer ${authToken}`
+        }
+      })
       .then((response) => {
         setTotalEvents(response.data.total_events);
       })
@@ -50,7 +58,11 @@ function Dashboard() {
       });
 
     axios
-      .get("/api/totalattendeesOrganizer")
+      .post("/api/totalattendeesOrganizer", {
+        headers: {
+          Authorization: `Bearer ${authToken}`
+        }
+      })
       .then((response) => {
         setTotalAttendees(response.data.total_attendees.length);
       })
@@ -59,7 +71,11 @@ function Dashboard() {
       });
 
     axios
-      .get("/api/totalsponsors")
+      .post("/api/totalsponsors", {
+        headers: {
+          Authorization: `Bearer ${authToken}`
+        }
+      })
       .then((response) => {
         setTotalSponsors(response.data.totalsponsors);
       })
@@ -68,7 +84,11 @@ function Dashboard() {
       });
 
     axios
-      .get("/api/upcomingevents")
+      .post("/api/upcomingevents", {
+        headers: {
+          Authorization: `Bearer ${authToken}`
+        }
+      })
       .then((response) => {
         setUpcomingEvents(response.data.upcoming_events);
         setUpcomingEventsData(response.data.data);
@@ -77,7 +97,11 @@ function Dashboard() {
         console.error("Error fetching attendee count:", error);
       });
 
-    axios.get("/api/events").then((res) => {
+    axios.post("/api/events", {
+      headers: {
+        Authorization: `Bearer ${authToken}`
+      }
+    }).then((res) => {
       if (res.data.status === 200) {
         setEvents(res.data.data);
       }

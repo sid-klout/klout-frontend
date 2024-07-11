@@ -31,7 +31,7 @@ function AllReports() {
       history.push("/login");
     }
 
-    axios.get("/api/reports").then((res) => {
+    axios.post("/api/reports").then((res) => {
       if (res.data.status === 200) {
         setReports(res.data.data);
         setFilteredReports(res.data.data);
@@ -39,7 +39,7 @@ function AllReports() {
       setLoading(false);
     });
 
-    axios.get(`/api/profile`).then((res) => {
+    axios.post(`/api/profile`).then((res) => {
       if (res.data.status === 200) {
         setUser(res.data.user);
       }

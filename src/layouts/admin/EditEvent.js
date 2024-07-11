@@ -68,6 +68,7 @@ function EditEvent(props) {
     feedback: "",
     status: "",
     new_image: null,
+    google_map_link: ""
   });
 
   useEffect(() => {
@@ -437,6 +438,7 @@ function EditEvent(props) {
       formData.append("event_end_date", eventInput.event_end_date);
       formData.append("feedback", eventInput.feedback);
       formData.append("status", eventInput.status);
+      formData.append("google_map_link", eventInput.google_map_link)
       formData.append("_method", "PUT");
 
       axios
@@ -923,6 +925,32 @@ function EditEvent(props) {
                       )}
                     </div>
                   </div>
+                </div>
+              </div>
+
+              { /* Google Map Link  */ }
+
+              <div className="form-group row">
+                <label
+                  forhtml="title"
+                  className="col-12 col-lg-2 col-form-label"
+                >
+                  Google Map Link
+                </label>
+                <div className="col-10">
+                  <input
+                    type="text"
+                    className={`form-control`}
+                    placeholder="Google Map Link"
+                    onBlur={handleBlur}
+                    name="google_map_link"
+                    value={eventInput.google_map_link}
+                    onChange={handleInput}
+                    onFocus={handleInputFocus}
+                  />
+                  {/* <p style={{ fontSize: "12px", float: "right" }}>
+                    * Maximum 100 Characters Allowed.
+                  </p> */}
                 </div>
               </div>
 
