@@ -51,7 +51,7 @@ function ViewEvent() {
           <div className="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 className="h3 mb-0 text-gray-800 ">Event Details</h1>
             <Link
-              to={`/admin/all-events`}
+              to={`/organiser/admin/all-events`}
               className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
               style={{
                 backgroundColor: "#F5007E",
@@ -247,7 +247,7 @@ function ViewEvent() {
                         }}
                       >
                         <Link
-                          to={`/admin/send-notification-attendee/${id}`}
+                          to={`/organiser/admin/send-notification-attendee/${id}`}
                           className="btn btn-sm btn-info shadow-sm"
                           style={{
                             borderColor: "#0dcaf0",

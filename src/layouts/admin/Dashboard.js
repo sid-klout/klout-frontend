@@ -114,7 +114,7 @@ function Dashboard() {
       <div className="d-sm-flex align-items-center justify-content-between m-4">
         <h1 className="h3 mb-0 text-gray-800">Dashboard</h1>
         <Link
-          to="/admin/add-event"
+          to="/organiser/admin/add-event"
           className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
           style={{
             backgroundColor: "#F5007E",
@@ -251,7 +251,7 @@ function Dashboard() {
         <h1 className="h3 mb-0 text-gray-800">Upcoming Events</h1>
         {upcomingEventsData.length > 0 && (
           <Link
-            to="/admin/all-events"
+            to="/organiser/admin/all-events"
             className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
             style={{
               backgroundColor: "#F5007E",
@@ -311,7 +311,7 @@ function Dashboard() {
         <h1 className="h3 mb-0 text-gray-800">All Events</h1>
         {events.length > 0 && (
           <Link
-            to="/admin/all-events"
+            to="/organiser/admin/all-events"
             className="d-sm-inline-block btn btn-sm btn-primary shadow-sm"
             style={{
               backgroundColor: "rgb(220 210 68)",

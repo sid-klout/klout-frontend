@@ -6,8 +6,10 @@ import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import loadingGif from "../../assets/images/load.gif";
+import { useSelector } from "react-redux";
 
-function AllAttendee(props) {
+function AllPendingAttendee(props) {
+  const userID = useSelector(state => state.auth.user_id);
   const [loading, setLoading] = useState(false);
   const [attendees, setAddendees] = useState([]);
   const [filteredAttendees, setFilteredAttendees] = useState([]);
@@ -30,14 +32,16 @@ function AllAttendee(props) {
   const [isPast, setIsPast] = useState(false);
 
   useEffect(() => {
-    axios.post(`/api/totalattendees/${event_id}`).then((res) => {
-      if (res.data.status === 200) {
-        setAddendees(res.data.data);
-        setFilteredAttendees(res.data.data);
-        setExcelAttendees(res.data.excel_data);
-      }
-      setLoading(false);
-    });
+    axios
+      .post(`/api/pending_event_requests/${event_id}`, { user_id: userID })
+      .then((res) => {
+        if (res.data.status === 200) {
+          setAddendees(res.data.data);
+          setFilteredAttendees(res.data.data);
+          setExcelAttendees(res.data.excel_data);
+        }
+        setLoading(false);
+      });
 
     axios.get(`/api/events/${event_id}`).then((res) => {
       if (res.data.status === 200) {
@@ -109,7 +113,7 @@ function AllAttendee(props) {
     XLSX.utils.book_append_sheet(workbook, worksheet, "Attendees");
 
     // Export the workbook to Excel file
-    XLSX.writeFile(workbook, "attendee_list.xlsx");
+    XLSX.writeFile(workbook, "pending_attendee_list.xlsx");
   };
 
   const capitalizeWord = (str) => {
@@ -149,6 +153,91 @@ function AllAttendee(props) {
         setIsForwarding(false);
         button.disabled = false;
       });
+  };
+
+  const approveAttendee = (e, id) => {
+    e.preventDefault();
+
+    const thisClicked = e.currentTarget;
+    Swal.fire({
+      title: "Approve Now?",
+      text: "Approve Attendee for this Event",
+      icon: "warning",
+      showCancelButton: true,
+      showDenyButton: true,
+      confirmButtonColor: "#3085d6",
+      denyButtonColor: "#d33",
+      cancelButtonColor: "#aaa",
+      confirmButtonText: "Approve",
+      denyButtonText: "Disapprove",
+      cancelButtonText: "Cancel",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .post(`/api/approved_pending_request`, {
+            id: id,
+            user_id: userID,
+            event_id: event_id,
+          })
+          .then(function (res) {
+            Swal.fire({
+              icon: "success",
+              title: res.data.message,
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            thisClicked.closest("tr").remove();
+
+            setTimeout(() => {
+              window.location.reload();
+            }, 2000);
+          })
+          .catch(function (error) {
+            Swal.fire({
+              icon: "error",
+              title: "An Error Occured!",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          });
+      } else if (result.isDenied) {
+        // Unapprove attendee
+        axios
+          .post(`/api/discard_pending_request`,{
+            id: id,
+            user_id: userID,
+            event_id: event_id,
+          })
+          .then(function (res) {
+            Swal.fire({
+              icon: "success",
+              title: res.data.message,
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            // thisClicked.closest("tr").remove();
+            setTimeout(() => {
+              window.location.reload();
+            }, 2000);
+          })
+          .catch(function (error) {
+            Swal.fire({
+              icon: "error",
+              title: "An Error Occurred!",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          });
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        // User canceled the action
+        Swal.fire({
+          icon: "info",
+          title: "Action Canceled",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+    });
   };
 
   const deleteAttendee = (e, id) => {
@@ -204,8 +293,7 @@ function AllAttendee(props) {
           <td>{capitalizeWord(item.company_name)}</td>
           <td>{item.email_id}</td>
           <td>{item.phone_number === null ? "" : item.phone_number}</td>
-          <td>{capitalizeWord(item.status)}</td>
-          <td>{item.check_in == 1 ? "Yes" : "No"}</td>
+          <td>{item.user_invitation_request === 0 ? "Pending" : item.user_invitation_request === 2 ? "Disapprove" : "Approved"}</td>
           <td className="d-flex">
             {/* <Link
               to={`add-attendee/${item.id}`}
@@ -227,8 +315,8 @@ function AllAttendee(props) {
             >
               <i className="fas fa-eye"></i>
             </Link>
-            &nbsp; &nbsp;
-            <Link
+            {/* &nbsp; &nbsp; */}
+            {/* <Link
               to={`/organiser/admin/edit-attendee/${item.uuid}`}
               data-toggle="tooltip"
               data-placement="bottom"
@@ -237,18 +325,22 @@ function AllAttendee(props) {
               style={{ borderRadius: "50%" }}
             >
               <i className="fas fa-edit"></i>
-            </Link>
-            &nbsp; &nbsp;
-            <button
-              data-toggle="tooltip"
-              data-placement="bottom"
-              title="Delete Attendee"
-              className="btn btn-sm btn-danger btn-circle"
-              onClick={(e) => deleteAttendee(e, item.id)}
-              style={{ borderRadius: "50%" }}
-            >
-              <i className="fas fa-trash"></i>
-            </button>
+            </Link> */}
+            {item.user_invitation_request === 0  && (
+              <>
+                &nbsp; &nbsp;
+                <button
+                  data-toggle="tooltip"
+                  data-placement="bottom"
+                  title="Approve Attendee"
+                  className="btn btn-sm btn-success btn-circle"
+                  onClick={(e) => approveAttendee(e, item.id)}
+                  style={{ borderRadius: "50%" }}
+                >
+                  <i className="fa fa-clock"></i> Approve
+                </button>
+              </>
+            )}
           </td>
         </tr>
       );
@@ -259,13 +351,12 @@ function AllAttendee(props) {
     <>
       <div className="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 className="h3 mb-0 text-gray-800">
-          All Attendees for Event - {event.title} - Total Attendee -{" "}
-          {attendees.length}
+          Pending Approval - {event.title} - Total Attendee - {attendees.length}
         </h1>
 
         <div className="d-none d-sm-inline-block shadow-sm py-3 px-3">
           <Link
-            to={`/organiser/admin/all-events`}
+            to={`/organiser/admin/all-attendee/${event_id}`}
             className="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm"
             style={{
               backgroundColor: "#F5007E",
@@ -274,86 +365,10 @@ function AllAttendee(props) {
               borderRadius: "12px",
             }}
           >
-            <i className="fa fa-solid fa-arrow-left"></i> &nbsp; Go Back
+            <i className="fa fa-solid fa-arrow-left"></i> &nbsp; Go Back to All
+            Attendees
           </Link>
           &nbsp; &nbsp;
-          <Link
-            to={`/organiser/admin/add-attendee/${event_id}`}
-            className="btn btn-sm btn-primary shadow-sm"
-            style={{
-              // backgroundColor: "#F5007E",
-              // borderColor: "#F5007E",
-              color: "white",
-              borderRadius: "12px",
-            }}
-          >
-            <i className="fa fa-solid fa-user-plus"></i> &nbsp; Add Attendee or
-            Import Excel
-          </Link>
-          {attendees.length > 0 && (
-            <>
-              &nbsp; &nbsp;
-              {/* {isPast && ( */}
-              <Link
-                // to={`admin/add-attendee/${event_id}`}
-                to={`/organiser/admin/send-notification-attendee/${event_id}`}
-                className="btn btn-sm btn-info shadow-sm my-2"
-                style={{
-                  borderColor: "#0dcaf0",
-                  color: "white",
-                  borderRadius: "12px",
-                }}
-              >
-                <i className="fa fa-solid fa-paper-plane"></i> &nbsp; Send
-                Reminder
-              </Link>
-              {/* )} */}
-              &nbsp; &nbsp;
-              <Link
-                // to={`admin/add-attendee/${event_id}`}
-                // to={`/organiser/admin/forward-attendee-to-sponsor/${event_id}`}
-
-                onClick={(e) => sendAttendeeListByEmail(e, event_id)}
-                className="btn btn-sm btn-danger shadow-sm my-2"
-                style={{
-                  borderColor: "#0dcaf0",
-                  color: "white",
-                  borderRadius: "12px",
-                }}
-                disabled={forward}
-              >
-                {forward ? (
-                  <>
-                    <img
-                      src={loadingGif}
-                      alt="Loading..."
-                      style={{ width: "20px", height: "20px" }}
-                    />
-                    &nbsp; Sending Now
-                  </>
-                ) : (
-                  <>
-                    <i className="fa fa-solid fa-paper-plane"></i>
-                    &nbsp; Forward List to Sponsors
-                  </>
-                )}
-              </Link>
-              &nbsp; &nbsp;
-            </>
-          )}
-          &nbsp; &nbsp;
-          <Link
-            // to={admin/add-attendee/${event_id}}
-            to={`/organiser/admin/pending-attendee/${event_id}`}
-            className="btn btn-sm btn-info shadow-sm my-2"
-            style={{
-              borderColor: "#0dcaf0",
-              color: "white",
-              borderRadius: "12px",
-            }}
-          >
-            <i className="fa fa-solid fa-user"></i> &nbsp; Pending User Request
-          </Link>
           {/* <Link
             to={`/organiser/admin/send-mail-attendee/${event_id}`}
             className="btn btn-sm btn-danger shadow-sm"
@@ -450,8 +465,7 @@ function AllAttendee(props) {
                     <th>Company</th>
                     <th>Email</th>
                     <th>Mobile No.</th>
-                    <th>Role</th>
-                    <th>Check In</th>
+                    <th>Status</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -504,4 +518,4 @@ function AllAttendee(props) {
   );
 }
 
-export default AllAttendee;
+export default AllPendingAttendee;

@@ -92,7 +92,7 @@ function SendSmsAttendee(props) {
         setEvent(res.data.data);
       } else if (res.data.status === 400) {
         swal("Error", res.data.message, "error");
-        history.push("/admin/all-events");
+        history.push("/organiser/admin/all-events");
       }
     });
   }, [history, eventId]);
@@ -319,7 +319,7 @@ function SendSmsAttendee(props) {
 
             setErrors({});
 
-            history.push(`/admin/all-attendee/${eventId}`);
+            history.push(`/organiser/admin/all-attendee/${eventId}`);
           } else if (res.data.status === 422) {
             setErrors(res.data.errors);
           } else if (res.data.status === 400) {
@@ -362,7 +362,7 @@ function SendSmsAttendee(props) {
               Send Email / SMS to Attendee{" "}
             </h1>
             <Link
-              to={`/admin/all-attendee/${eventId}`}
+              to={`/organiser/admin/all-attendee/${eventId}`}
               className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
               style={{
                 backgroundColor: "#F5007E",
@@ -1124,7 +1124,7 @@ function SendSmsAttendee(props) {
                       {event.title}
 
                       <Link
-                        to={`/admin/view-event/${eventId}`}
+                        to={`/organiser/admin/view-event/${eventId}`}
                         className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
                         style={{
                           backgroundColor: "#F5007E",

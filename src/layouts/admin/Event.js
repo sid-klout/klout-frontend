@@ -433,7 +433,7 @@ function Event() {
 
             setErrors({});
 
-            history.push("/admin/all-events");
+            history.push("/organiser/admin/all-events");
           } else if (res.data.status === 422) {
             setErrors(res.data.errors);
           } else if (res.data.status === 400) {
@@ -532,7 +532,7 @@ function Event() {
             <h1 className="h3 mb-0 text-gray-800"> Add Event </h1>
 
             <Link
-              to={`/admin/all-events`}
+              to={`/organiser/admin/all-events`}
               className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
               style={{
                 backgroundColor: "#F5007E",

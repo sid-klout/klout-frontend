@@ -121,9 +121,9 @@ function Login() {
           // console.log("data", res);
           if (res.data.status === 200) {
 
-            dispatch(loginSuccess(res.data.access_token));
+            dispatch(loginSuccess(res.data));
 
-            // localStorage.setItem("auth_token", res.data.access_token);
+            localStorage.setItem("user_id", res.data.user_id);
             // localStorage.setItem("auth_name", "user");
 
             setErrors({});

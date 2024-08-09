@@ -513,16 +513,16 @@ function AddSponsors(props) {
 
             setErrors({});
             if (event_id > 0) {
-              history.push(`/admin/all-events/${event_id}`);
+              history.push(`/organiser/admin/all-events/${event_id}`);
             } else {
-              history.push(`/admin/sponsors`);
+              history.push(`/organiser/admin/sponsors`);
             }
           } else if (res.data.status === 422) {
             setErrors(res.data.errors);
           } else if (res.data.status === 400) {
             swal("All fields are mandatory", "", "error");
 
-            history.push(`/admin/all-events/${event_id}`);
+            history.push(`/organiser/admin/all-events/${event_id}`);
           }
         })
         .finally(() => {
@@ -550,7 +550,7 @@ function AddSponsors(props) {
           <div className="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 className="h3 mb-0 text-gray-800">Add Sponsor</h1>
             <Link
-              to={`/admin/sponsors`}
+              to={`/organiser/admin/sponsors`}
               className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
               style={{
                 backgroundColor: "#F5007E",

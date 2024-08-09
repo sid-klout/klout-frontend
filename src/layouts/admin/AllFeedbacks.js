@@ -108,7 +108,7 @@ function AllFeedbacks(props) {
                 <i className="fas fa-user"></i>
               </Link> */}
             {/* <Link
-              to={`/admin/view-attendee-details/${item.id}`}
+              to={`/organiser/admin/view-attendee-details/${item.id}`}
               data-toggle="tooltip"
               data-placement="bottom"
               title="View Attendee Detail"
@@ -119,7 +119,7 @@ function AllFeedbacks(props) {
             </Link>
             &nbsp; &nbsp;
             <Link
-              to={`/admin/edit-attendee/${item.id}`}
+              to={`/organiser/admin/edit-attendee/${item.id}`}
               data-toggle="tooltip"
               data-placement="bottom"
               title="Edit Attendee"
@@ -157,7 +157,7 @@ function AllFeedbacks(props) {
           </a> */}
         {/* 
           <Link
-            to="/admin/add-event"
+            to="/organiser/admin/add-event"
             className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
             style={{
               backgroundColor: "#F5007E",
@@ -171,7 +171,7 @@ function AllFeedbacks(props) {
 
         <div className="d-none d-sm-inline-block shadow-sm">
           <Link
-            to={`/admin/dashboard`}
+            to={`/organiser/admin/dashboard`}
             className="btn btn-sm btn-primary shadow-sm"
             style={{
               backgroundColor: "#F5007E",

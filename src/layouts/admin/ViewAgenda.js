@@ -60,7 +60,7 @@ function ViewAgenda() {
           <div className="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 className="h3 mb-0 text-gray-800">Agenda Details</h1>
             <button
-            //   to={`/admin/all-agendas/${uuid}`}
+            //   to={`/organiser/admin/all-agendas/${uuid}`}
             onClick={() => {window.history.back();}}
               className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
               style={{

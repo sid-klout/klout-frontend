@@ -466,13 +466,13 @@ function AddAgenda(props) {
 
             setErrors({});
 
-            history.push(`/admin/all-agenda/${uuid}`);
+            history.push(`/organiser/admin/all-agenda/${uuid}`);
           } else if (res.data.status === 422) {
             setErrors(res.data.errors);
           } else if (res.data.status === 400) {
             swal("All fields are mandatory", "", "error");
 
-            history.push(`/admin/all-agenda/${uuid}`);
+            history.push(`/organiser/admin/all-agenda/${uuid}`);
           }
         })
         .finally(() => {
@@ -628,7 +628,7 @@ function AddAgenda(props) {
 
           setFile(null);
 
-          history.push(`/admin/all-agenda/${uuid}`);
+          history.push(`/organiser/admin/all-agenda/${uuid}`);
         } else if (res.data.status === 400) {
           setDownloadInvalidExcel(true);
 
@@ -697,7 +697,7 @@ function AddAgenda(props) {
           <div className="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 className="h3 mb-0 text-gray-800">Add Agenda </h1>
             <button
-            //   to={`/admin/all-attendee/${event_id}`}
+            //   to={`/organiser/admin/all-attendee/${event_id}`}
             onClick={() => {window.history.back()}}
               className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
               style={{

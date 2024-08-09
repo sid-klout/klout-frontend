@@ -349,6 +349,44 @@ const TermsAndConditions = () => {
                   party rights.
                 </p>
 
+                <p>
+                  Content Moderation and User Conduct
+                  Objectionable Content Reporting
+                </p>
+
+                <p>
+                  Users of our platform are encouraged to report any content they find objectionable. Objectionable content includes, but is not limited to, any material that is offensive, inappropriate, or in violation of our community standards and guidelines.
+                  
+                </p>
+
+                <p>
+                Our Response Time <br />
+                  Upon receiving a report of objectionable content, the Klout team is committed to taking prompt action. The Klout team will review the reported content within 24 hours of receiving the report.
+                </p>
+
+                <p>
+                Content Removal <br />
+                  If the content is deemed objectionable upon review, the Klout team will remove the content from the platform within the 24-hour period.
+                  
+                </p>
+
+                <p>
+                User Ejection <br />
+                  In addition to removing the offending content, the user who provided the objectionable content will be ejected from the platform. This means their account will be suspended or terminated to maintain a safe and respectful community environment.
+                  
+                </p>
+
+                <p>
+                Appeal Process <br />
+                  Users who have been ejected from the platform have the right to appeal the decision. Appeals must be submitted within 7 days of the ejection notice. Klout team will review appeals and respond within 14 days.
+                  
+                </p>
+
+                <p>
+                Amendments <br />
+                Klout team reserves the right to amend these terms and conditions at any time. Changes will be effective immediately upon posting to the platform. Continued use of the platform following any amendments constitutes acceptance of the new terms and conditions.
+                </p>
+
                 <h3>
                   <strong>Reservation of Rights</strong>
                 </h3>

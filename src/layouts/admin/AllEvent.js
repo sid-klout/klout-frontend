@@ -319,7 +319,7 @@ function AllEvent() {
         <h1 className="h3 mb-0 text-gray-800">All Events</h1>
 
         <Link
-          to="/admin/add-event"
+          to="/organiser/admin/add-event"
           className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
           style={{
             backgroundColor: "#F5007E",

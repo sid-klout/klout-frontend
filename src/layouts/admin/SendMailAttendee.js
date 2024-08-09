@@ -150,12 +150,12 @@ function SendMailAttendee() {
           });
           setErrors({});
 
-          //   history.push("/admin/all-events");
+          //   history.push("/organiser/admin/all-events");
         } else if (res.data.status === 422) {
           setErrors(res.data.errors);
         } else if (res.data.status === 400) {
           swal("All fields are mandatory", "", "error");
-          //   history.push("/admin/all-events");
+          //   history.push("/organiser/admin/all-events");
         }
       })
       .finally(() => {

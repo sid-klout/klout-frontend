@@ -227,7 +227,7 @@ function AllAgenda(props) {
 
             
             <Link
-              to={`/admin/view-agenda-details/${item.uuid}`}
+              to={`/organiser/admin/view-agenda-details/${item.uuid}`}
               data-toggle="tooltip"
               data-placement="bottom"
               title="View Attendee Detail"
@@ -238,7 +238,7 @@ function AllAgenda(props) {
             </Link>
             &nbsp; &nbsp;
             <Link
-              to={`/admin/edit-agenda/${item.uuid}`}
+              to={`/organiser/admin/edit-agenda/${item.uuid}`}
               data-toggle="tooltip"
               data-placement="bottom"
               title="Edit Attendee"
@@ -274,7 +274,7 @@ function AllAgenda(props) {
 
         <div className="d-none d-sm-inline-block shadow-sm py-3 px-3">
           <Link
-            to={`/admin/all-events`}
+            to={`/organiser/admin/all-events`}
             className="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm"
             style={{
               backgroundColor: "#F5007E",
@@ -287,7 +287,7 @@ function AllAgenda(props) {
           </Link>
           &nbsp; &nbsp;
           <Link
-            to={`/admin/add-agenda/${uuid}`}
+            to={`/organiser/admin/add-agenda/${uuid}`}
             className="btn btn-sm btn-primary shadow-sm"
             style={{
               color: "white",
@@ -300,7 +300,7 @@ function AllAgenda(props) {
             <>
               &nbsp; &nbsp;
               <Link
-                to={`/admin/send-notification-attendee/${event_id}`}
+                to={`/organiser/admin/send-notification-attendee/${event_id}`}
                 className="btn btn-sm btn-info shadow-sm my-2"
                 style={{
                   borderColor: "#0dcaf0",

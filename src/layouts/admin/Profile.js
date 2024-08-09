@@ -61,7 +61,7 @@ function EditAttendee(props) {
         }
       } else if (res.data.status === 400) {
         // swal("Error", res.data.message, "error");
-        // history.push("/admin/all-attendees");
+        // history.push("/organiser/admin/all-attendees");
       }
     });
 
@@ -381,7 +381,7 @@ function EditAttendee(props) {
             setErrors(res.data.error);
           } else if (res.data.status === 400) {
             // swal("All fields are mandatory", "", "error");
-            // history.push(`/admin/all-attendee/${event_id}`);
+            // history.push(`/organiser/admin/all-attendee/${event_id}`);
           }
         })
         .finally(() => {
@@ -430,7 +430,7 @@ function EditAttendee(props) {
           <div className="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 className="h3 mb-0 text-gray-800">Profile</h1>
             <Link
-              to={`/admin/dashboard`}
+              to={`/organiser/admin/dashboard`}
               className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
               style={{
                 backgroundColor: "#F5007E",

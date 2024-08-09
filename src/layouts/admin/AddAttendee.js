@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useHistory, Link } from "react-router-dom";
 
 import axios from "axios";
@@ -13,6 +13,7 @@ function AddAttendee(props) {
   const fileInputRef = useRef(null);
 
   const event_id = props.match.params.id;
+  console.log(event_id);
 
   const [file, setFile] = useState(null);
 
@@ -27,6 +28,13 @@ function AddAttendee(props) {
   const [inValidData, setInValidData] = useState({});
   const [downloadInvalidExcel, setDownloadInvalidExcel] = useState(false);
   const [showAlert, setShowAlert] = useState(true);
+  const [companyInput, setCompanyInput] = useState(false);
+  const [companyData, setCompanyData] = useState([]);
+  const [designationData, setDesignationData] = useState([]);
+  const [designationInput, setDesignationInput] = useState(false);
+
+  const [industryData, setIndustryData] = useState([]);
+  const [industryInput, setIndustryInput] = useState(false);
 
   const [formInput, setFormInput] = useState({
     event_id: event_id,
@@ -45,6 +53,68 @@ function AddAttendee(props) {
     status: "",
     // image: null,
   });
+
+  useEffect(() => {
+    axios.get("/api/job-titles").then((res) => {
+      if (res.data.status === 200) {
+        setDesignationData(res.data.data);
+      }
+    });
+
+    axios.get("/api/companies").then((res) => {
+      if (res.data.status === 200) {
+        setCompanyData(res.data.data);
+      }
+    });
+
+    axios.get("/api/get-industries").then((res) => {
+      if (res.data.status === 200) {
+        setIndustryData(res.data.data);
+      }
+    });
+  }, [])
+
+
+
+
+  const handleDesignationChange = (event) => {
+    const value = event.target.value;
+
+    if (value == 252) {
+      setDesignationInput(true);
+    } else {
+      setDesignationInput(false);
+      setFormInput((prevData) => ({ ...prevData, job_title: value }));
+    }
+
+    
+  };
+
+  const handleIndustryChange = (event) => {
+    const value = event.target.value;
+
+    if (value == 212) {
+      setIndustryInput(true);
+    } else {
+      setIndustryInput(false);
+      setFormInput((prevData) => ({ ...prevData, industry: value }));
+    }
+
+    
+  };
+
+  const handleCompanyChange = (event) => {
+    const value = event.target.value;
+
+
+    if (value == 439) {
+      setCompanyInput(true);
+    } else {
+      setCompanyInput(false);
+      setFormInput((prevData) => ({ ...prevData, company_name:  value }));
+    }
+    
+  };
 
   const handleInput = (e) => {
     e.persist();
@@ -364,13 +434,13 @@ function AddAttendee(props) {
 
             setErrors({});
 
-            history.push(`/admin/all-attendee/${event_id}`);
+            history.push(`/organiser/admin/all-attendee/${event_id}`);
           } else if (res.data.status === 422) {
             setErrors(res.data.errors);
           } else if (res.data.status === 400) {
             swal("All fields are mandatory", "", "error");
 
-            history.push(`/admin/all-attendee/${event_id}`);
+            history.push(`/organiser/admin/all-attendee/${event_id}`);
           }
         })
         .finally(() => {
@@ -526,7 +596,7 @@ function AddAttendee(props) {
 
           setFile(null);
 
-          history.push(`/admin/all-attendee/${event_id}`);
+          history.push(`/organiser/admin/all-attendee/${event_id}`);
         } else if (res.data.status === 400) {
           setDownloadInvalidExcel(true);
 
@@ -595,7 +665,7 @@ function AddAttendee(props) {
           <div className="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 className="h3 mb-0 text-gray-800">Add Attendee </h1>
             <Link
-              to={`/admin/all-attendee/${event_id}`}
+              to={`/organiser/admin/all-attendee/${event_id}`}
               className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
               style={{
                 backgroundColor: "#F5007E",
@@ -849,6 +919,8 @@ function AddAttendee(props) {
                     </label>
                     <div className="col-12 mb-3 mb-sm-0">
                       <div className="form-group">
+
+                      { designationInput ? 
                         <input
                           type="job_title"
                           className={`form-control ${
@@ -861,6 +933,29 @@ function AddAttendee(props) {
                           onBlur={handleBlur}
                           onFocus={handleInputFocus}
                         />
+
+                          :
+                        <select
+                          className={`form-control ${
+                            errors.company ? "is-invalid" : ""
+                          }`}
+                          name="job_title"
+                          value={formInput.job_title}
+                          onChange={handleDesignationChange}
+                          onBlur={handleBlur}
+                          onFocus={handleInputFocus}
+                          style={{ padding: "0.3rem 1rem", fontSize: "1rem" }}
+                        >
+                          <option value="">Select Designation</option>
+
+                          {designationData.length > 0 &&
+                            designationData.map((item) => (
+                              <option key={item.id} value={item.id}>
+                                {item.name}
+                              </option>
+                            ))}
+                        </select>
+                      }
 
                         {errors.job_title && (
                           <div
@@ -886,7 +981,7 @@ function AddAttendee(props) {
                     </label>
                     <div className="col-12 mb-3 mb-sm-0">
                       <div className="form-group">
-                        <input
+                        {/* <input
                           type="company_name"
                           className={`form-control ${
                             errors.company_name ? "is-invalid" : ""
@@ -897,7 +992,46 @@ function AddAttendee(props) {
                           onChange={handleInput}
                           onBlur={handleBlur}
                           onFocus={handleInputFocus}
-                        />
+                        /> */}
+
+                        {!companyInput ?  
+
+                        <select
+                          className={`form-control ${
+                            errors.company ? "is-invalid" : ""
+                          }`}
+                          name="company_name"
+                          value={formInput.company_name}
+                          onChange={handleCompanyChange}
+                          onBlur={handleBlur}
+                          onFocus={handleInputFocus}
+                          style={{ padding: "0.3rem 1rem", fontSize: "1rem" }}
+                        >
+                          <option value="">Select Company</option>
+
+                          {companyData.length > 0 &&
+                            companyData.map((item) => (
+                              <option key={item.id} value={item.id}>
+                                {item.name}
+                              </option>
+                            ))}
+                        </select> :  
+                        <input
+                          type="company_name"
+                          className={`form-control ${
+                            errors.company_name ? "is-invalid" : ""
+                          }`}
+                          placeholder="Company"
+                          name="company_name"
+                          value={formInput.company_name}
+                          onChange={handleInput}
+                          onBlur={handleBlur}
+                          onFocus={handleInputFocus}
+                        /> 
+                        }
+
+
+
 
                         {errors.company_name && (
                           <div
@@ -920,7 +1054,7 @@ function AddAttendee(props) {
                     </label>
                     <div className="col-12 mb-3 mb-sm-0">
                       <div className="form-group">
-                        <input
+                        {/* <input
                           type="industry"
                           className={`form-control ${
                             errors.industry ? "is-invalid" : ""
@@ -931,7 +1065,44 @@ function AddAttendee(props) {
                           onChange={handleInput}
                           onBlur={handleBlur}
                           onFocus={handleInputFocus}
+                        /> */}
+
+                      { industryInput ? 
+                        <input
+                          type="job_title"
+                          className={`form-control ${
+                            errors.job_title ? "is-invalid" : ""
+                          }`}
+                          placeholder="Industry"
+                          name="industry"
+                          value={formInput.industry}
+                          onChange={handleInput}
+                          onBlur={handleBlur}
+                          onFocus={handleInputFocus}
                         />
+
+                          :
+                        <select
+                          className={`form-control ${
+                            errors.company ? "is-invalid" : ""
+                          }`}
+                          name="industry"
+                          value={formInput.industry}
+                          onChange={handleIndustryChange}
+                          onBlur={handleBlur}
+                          onFocus={handleInputFocus}
+                          style={{ padding: "0.3rem 1rem", fontSize: "1rem" }}
+                        >
+                          <option value="">Select Industry</option>
+
+                          {industryData.length > 0 &&
+                            industryData.map((item) => (
+                              <option key={item.id} value={item.id}>
+                                {item.name}
+                              </option>
+                            ))}
+                        </select>
+                      }
 
                         {errors.industry && (
                           <div

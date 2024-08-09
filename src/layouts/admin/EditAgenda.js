@@ -80,7 +80,7 @@ function EditAgenda(props) {
         // setOrginalEventId(res.data.event_id);
       } else if (res.data.status === 400) {
         swal("Error", res.data.message, "error");
-        history.push("/admin/all-agendas");
+        history.push("/organiser/admin/all-agendas");
       }
     });
   }, [uuid]);
@@ -458,14 +458,14 @@ function EditAgenda(props) {
 
             setErrors({});
 
-            // history.push(`/admin/all-attendee/${orginalEventId}`);
+            // history.push(`/organiser/admin/all-attendee/${orginalEventId}`);
             window.history.back()
           } else if (res.data.status === 422) {
             // console.log("success", res.data.errors);
             setErrors(res.data.errors);
           } else if (res.data.status === 400) {
             swal("All fields are mandatory", "", "error");
-            // history.push(`/admin/all-attendee/${eventId}`);
+            // history.push(`/organiser/admin/all-attendee/${eventId}`);
             window.history.back()
           }
         })
@@ -493,7 +493,7 @@ function EditAgenda(props) {
           <div className="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 className="h3 mb-0 text-gray-800">Edit Agenda </h1>
             <button
-            //   to={`/admin/all-attendee/${orginalEventId}`}
+            //   to={`/organiser/admin/all-attendee/${orginalEventId}`}
             onClick={() => {window.history.back()}}
               className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
               style={{

@@ -28,9 +28,9 @@ import Dashboard from "./layouts/admin/Dashboard";
 import { Provider } from "react-redux";
 import store from "./store";
 
-axios.defaults.baseURL = "https://api.klout.club/";
+// axios.defaults.baseURL = "https://api.klout.club/";
 
-// axios.defaults.baseURL = "http://localhost:8000/";
+axios.defaults.baseURL = "http://localhost:8000/";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 axios.defaults.headers.post["Accept"] = "application/json";
@@ -53,7 +53,7 @@ function App() {
 
   return (
     <div className="App">
-      <Router basename="/">
+      <Router basename="/organiser">
         <Switch>
           <Route exact path="/" component={LandingHome} />
 

@@ -41,7 +41,7 @@ function Sidebar({ menuOpen, setMenuOpen, toggleMenu }) {
       }
     }).then((res) => {
       if (res.data.status === 200) {
-        console.log(res.data.user)
+        // console.log(res.data.user)
         // setFormInput(res.data.user);
         setLogoPath(res.data.user.company_logo)
 
@@ -101,7 +101,7 @@ function Sidebar({ menuOpen, setMenuOpen, toggleMenu }) {
       >
         {/* <!-- Sidebar - Brand --> */}
         <Link
-          to="/admin/dashboard"
+          to="/organiser/admin/dashboard"
           className="sidebar-brand d-flex align-items-center justify-content-center"
           style={{
             padding: "0px",
@@ -113,8 +113,10 @@ function Sidebar({ menuOpen, setMenuOpen, toggleMenu }) {
               className="sidebar-card-illustration mb-2"
 
               style={{width: '150px', marginTop: '15px'}}
-              // src={logoPath? `https://api.klout.club/${logoPath}`: Logo}
-              src={logoPath? `https://api.klout.club/uploads/companylogo/1720532777.jpg`: Logo}
+              src={logoPath? `https://api.klout.club/${logoPath}`: Logo}
+              // src={logoPath? `https://api.klout.club/uploads/companylogo/1720532777.jpg`: Logo}
+              // src={logoPath? `https://api.klout.club/uploads/companylogo/1720609835.jpg`: Logo}
+              
 
               alt="Klout Club"
               // style={{ 
@@ -132,7 +134,7 @@ function Sidebar({ menuOpen, setMenuOpen, toggleMenu }) {
 
         {/* <!-- Nav Item - Dashboard --> */}
         <li className="nav-item active">
-          <Link to="/admin/dashboard" className="nav-link">
+          <Link to="/organiser/admin/dashboard" className="nav-link">
             <i className="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span>
           </Link>
@@ -164,10 +166,10 @@ function Sidebar({ menuOpen, setMenuOpen, toggleMenu }) {
             data-parent="#accordionSidebar"
           >
             <div className="bg-white py-2 collapse-inner rounded">
-              <Link to="/admin/all-events" className="collapse-item">
+              <Link to="/organiser/admin/all-events" className="collapse-item">
                 All Events
               </Link>
-              <Link to="/admin/add-event" className="collapse-item">
+              <Link to="/organiser/admin/add-event" className="collapse-item">
                 Create New Event
               </Link>
             </div>
@@ -176,12 +178,12 @@ function Sidebar({ menuOpen, setMenuOpen, toggleMenu }) {
 
         {/* <!-- Nav Item - Pages Collapse Menu --> */}
         <li className="nav-item">
-          <Link to="/admin/all-attendee-list" className="nav-link">
+          <Link to="/organiser/admin/all-attendee-list" className="nav-link">
             <i className="fa fa-solid fa-users"></i>
             <span>All Attendees</span>
           </Link>
 
-          <Link to="/admin/sponsors" className="nav-link">
+          <Link to="/organiser/admin/sponsors" className="nav-link">
             <i className="fa fa-solid fa-user-secret"></i>
             <span>All Sponsors</span>
           </Link>
@@ -208,10 +210,10 @@ function Sidebar({ menuOpen, setMenuOpen, toggleMenu }) {
           >
             <div className="bg-white py-2 collapse-inner rounded">
               <h6 className="collapse-header">Email Manager:</h6>
-              <Link to="/admin/email-manager" className="collapse-item">
+              <Link to="/organiser/admin/email-manager" className="collapse-item">
                 Email Manager
               </Link>
-              <Link to="/admin/mass-mailing" className="collapse-item">
+              <Link to="/organiser/admin/mass-mailing" className="collapse-item">
                 Mass Mailing
               </Link>
             </div>
@@ -245,10 +247,10 @@ function Sidebar({ menuOpen, setMenuOpen, toggleMenu }) {
           >
             <div className="bg-white py-2 collapse-inner rounded">
               {/* <h6 className="collapse-header">Login Screens:</h6> */}
-        {/* <Link to="/admin/all-contacts" className="collapse-item">
+        {/* <Link to="/organiser/admin/all-contacts" className="collapse-item">
                 All Contacts
               </Link>
-              <Link to="/admin/contact-status" className="collapse-item">
+              <Link to="/organiser/admin/contact-status" className="collapse-item">
                 Contact Status
               </Link>
             </div>
@@ -275,25 +277,25 @@ function Sidebar({ menuOpen, setMenuOpen, toggleMenu }) {
             data-parent="#accordionSidebar"
           >
             <div className="bg-white py-2 collapse-inner rounded">
-              <Link to="/admin/add-skills" className="collapse-item">
+              <Link to="/organiser/admin/add-skills" className="collapse-item">
                 Add Skills
               </Link>
-              <Link to="/admin/add-country" className="collapse-item">
+              <Link to="/organiser/admin/add-country" className="collapse-item">
                 Add Country
               </Link>
-              <Link to="/admin/add-state" className="collapse-item">
+              <Link to="/organiser/admin/add-state" className="collapse-item">
                 Add State
               </Link>
-              <Link to="/admin/add-city" className="collapse-item">
+              <Link to="/organiser/admin/add-city" className="collapse-item">
                 Add City
               </Link>
-              <Link to="/admin/add-industry" className="collapse-item">
+              <Link to="/organiser/admin/add-industry" className="collapse-item">
                 Add Industry
               </Link>
-              <Link to="/admin/add-company" className="collapse-item">
+              <Link to="/organiser/admin/add-company" className="collapse-item">
                 Add Company
               </Link>
-              <Link to="/admin/add-job-title" className="collapse-item">
+              <Link to="/organiser/admin/add-job-title" className="collapse-item">
                 Add Job Title
               </Link>
             </div>
@@ -301,14 +303,14 @@ function Sidebar({ menuOpen, setMenuOpen, toggleMenu }) {
         </li> */}
 
         <li className="nav-item">
-          <Link className="nav-link" to="/admin/all-reports">
+          <Link className="nav-link" to="/organiser/admin/all-reports">
             <i class="fa fa-flag" aria-hidden="true"></i>
             <span>All Reports</span>
           </Link>
         </li>
 
         <li className="nav-item">
-          <Link className="nav-link" to="/admin/all-feedbacks">
+          <Link className="nav-link" to="/organiser/admin/all-feedbacks">
             <i className="fas fa-table"></i>
             <span>Feedbacks</span>
           </Link>
@@ -316,7 +318,7 @@ function Sidebar({ menuOpen, setMenuOpen, toggleMenu }) {
 
         {/* <!-- Nav Item - Charts --> */}
         <li className="nav-item">
-          <Link className="nav-link" to="/admin/get-help">
+          <Link className="nav-link" to="/organiser/admin/get-help">
             <i className="fas fa-hands-helping"></i>
             <span>Get Help</span>
           </Link>
@@ -324,7 +326,7 @@ function Sidebar({ menuOpen, setMenuOpen, toggleMenu }) {
 
         {/* <!-- Nav Item - Tables --> */}
         <li className="nav-item">
-          <Link className="nav-link" to="/admin/faqs">
+          <Link className="nav-link" to="/organiser/admin/faqs">
             <i className="fa fa-solid fa-question"></i>
             <span>FAQ's</span>
           </Link>

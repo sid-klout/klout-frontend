@@ -3,9 +3,9 @@
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 
-export const loginSuccess = (token) => ({
+export const loginSuccess = (user) => ({
   type: LOGIN_SUCCESS,
-  payload: token,
+  payload: user,
 });
 
 export const logoutSuccess = () => ({

@@ -33,7 +33,7 @@ function ChangePassword(props) {
         setFormInput(res.data.user);
       } else if (res.data.status === 400) {
         // swal("Error", res.data.message, "error");
-        // history.push("/admin/all-attendees");
+        // history.push("/organiser/admin/all-attendees");
       }
     });
   }, []);
@@ -187,7 +187,7 @@ function ChangePassword(props) {
           <div className="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 className="h3 mb-0 text-gray-800">Change Password</h1>
             <Link
-              to={`/admin/dashboard`}
+              to={`/organiser/admin/dashboard`}
               className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
               style={{
                 backgroundColor: "#F5007E",

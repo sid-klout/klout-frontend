@@ -241,7 +241,7 @@ function Reports() {
 
             setErrors({});
 
-            history.push(`/admin/all-reports`);
+            history.push(`/organiser/admin/all-reports`);
           } else if (res.data.status === 400) {
             setReportData({});
 
@@ -272,7 +272,7 @@ function Reports() {
           <div className="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 className="h3 mb-0 text-gray-800">Event Reports</h1>
             <Link
-              to={`/admin/all-reports`}
+              to={`/organiser/admin/all-reports`}
               className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
               style={{
                 backgroundColor: "#F5007E",

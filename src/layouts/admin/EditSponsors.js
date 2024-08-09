@@ -99,7 +99,7 @@ function EditSponsors(props) {
       }
     });
 
-    axios.get(`/api/sponsors/${sponsor_id}`).then((res) => {
+    axios.post(`/api/sponsors/${sponsor_id}`).then((res) => {
 
       if (res.data.status === 200) {
 
@@ -129,7 +129,7 @@ function EditSponsors(props) {
         // console.log("sponsor data", res.data.data);
       } else if (res.data.status === 400) {
         swal("Error", res.data.message, "error");
-        history.push("/admin/sponsors");
+        history.push("/organiser/admin/sponsors");
       }
     });
   }, []);
@@ -568,13 +568,13 @@ function EditSponsors(props) {
 
             setErrors({});
 
-            history.push(`/admin/sponsors`);
+            history.push(`/organiser/admin/sponsors`);
           } else if (res.data.status === 422) {
             setErrors(res.data.errors);
           } else if (res.data.status === 400) {
             swal("All fields are mandatory", "", "error");
 
-            history.push(`/admin/sponsors`);
+            history.push(`/organiser/admin/sponsors`);
           }
         })
         .finally(() => {
@@ -601,7 +601,7 @@ function EditSponsors(props) {
           <div className="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 className="h3 mb-0 text-gray-800">Edit Sponsor</h1>
             <Link
-              to={`/admin/sponsors`}
+              to={`/organiser/admin/sponsors`}
               className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
               style={{
                 backgroundColor: "#F5007E",

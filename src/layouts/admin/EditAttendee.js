@@ -22,6 +22,14 @@ function EditAttendee(props) {
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
+  const [companyInput, setCompanyInput] = useState(false);
+  const [companyData, setCompanyData] = useState([]);
+  const [designationData, setDesignationData] = useState([]);
+  const [designationInput, setDesignationInput] = useState(false);
+
+  const [industryData, setIndustryData] = useState([]);
+  const [industryInput, setIndustryInput] = useState(false);
+
   const [formInput, setFormInput] = useState({
     event_id: eventId,
     first_name: "",
@@ -41,6 +49,26 @@ function EditAttendee(props) {
   });
 
   useEffect(() => {
+    axios.get("/api/job-titles").then((res) => {
+      if (res.data.status === 200) {
+        setDesignationData(res.data.data);
+      }
+    });
+
+    axios.get("/api/companies").then((res) => {
+      if (res.data.status === 200) {
+        setCompanyData(res.data.data);
+      }
+    });
+
+    axios.get("/api/get-industries").then((res) => {
+      if (res.data.status === 200) {
+        setIndustryData(res.data.data);
+      }
+    });
+  }, [])
+
+  useEffect(() => {
     axios.post(`/api/attendees/${user_id}`).then((res) => {
       if (res.data.status === 200) {
         setEventId(res.data.data.event_id);
@@ -48,10 +76,49 @@ function EditAttendee(props) {
         setOrginalEventId(res.data.event_id);
       } else if (res.data.status === 400) {
         swal("Error", res.data.message, "error");
-        history.push("/admin/all-attendees");
+        history.push("/organiser/admin/all-attendees");
       }
     });
   }, [user_id]);
+
+  const handleDesignationChange = (event) => {
+    const value = event.target.value;
+
+    if (value == 252) {
+      setDesignationInput(true);
+    } else {
+      setDesignationInput(false);
+      setFormInput((prevData) => ({ ...prevData, job_title: value }));
+    }
+
+    
+  };
+
+  const handleIndustryChange = (event) => {
+    const value = event.target.value;
+
+    if (value == 212) {
+      setIndustryInput(true);
+    } else {
+      setIndustryInput(false);
+      setFormInput((prevData) => ({ ...prevData, industry: value }));
+    }
+
+    
+  };
+
+  const handleCompanyChange = (event) => {
+    const value = event.target.value;
+
+
+    if (value == 439) {
+      setCompanyInput(true);
+    } else {
+      setCompanyInput(false);
+      setFormInput((prevData) => ({ ...prevData, company_name:  value }));
+    }
+    
+  };
 
   const handleInput = (e) => {
     e.persist();
@@ -364,13 +431,13 @@ function EditAttendee(props) {
 
             setErrors({});
 
-            history.push(`/admin/all-attendee/${orginalEventId}`);
+            history.push(`/organiser/admin/all-attendee/${orginalEventId}`);
           } else if (res.data.status === 422) {
             // console.log("success", res.data.errors);
             setErrors(res.data.errors);
           } else if (res.data.status === 400) {
             swal("All fields are mandatory", "", "error");
-            history.push(`/admin/all-attendee/${eventId}`);
+            history.push(`/organiser/admin/all-attendee/${eventId}`);
           }
         })
         .finally(() => {
@@ -397,7 +464,7 @@ function EditAttendee(props) {
           <div className="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 className="h3 mb-0 text-gray-800">Edit Attendee </h1>
             <Link
-              to={`/admin/all-attendee/${orginalEventId}`}
+              to={`/organiser/admin/all-attendee/${orginalEventId}`}
               className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
               style={{
                 backgroundColor: "#F5007E",
@@ -683,6 +750,7 @@ function EditAttendee(props) {
                     </label>
                     <div className="col-12 col-lg-5 mb-3 mb-sm-0">
                       <div className="form-group">
+                      { designationInput ? 
                         <input
                           type="job_title"
                           className={`form-control ${
@@ -695,6 +763,29 @@ function EditAttendee(props) {
                           onBlur={handleBlur}
                           onFocus={handleInputFocus}
                         />
+
+                          :
+                        <select
+                          className={`form-control ${
+                            errors.company ? "is-invalid" : ""
+                          }`}
+                          name="job_title"
+                          value={formInput.job_title}
+                          onChange={handleDesignationChange}
+                          onBlur={handleBlur}
+                          onFocus={handleInputFocus}
+                          style={{ padding: "0.3rem 1rem", fontSize: "1rem" }}
+                        >
+                          <option value="">Select Designation</option>
+
+                          {designationData.length > 0 &&
+                            designationData.map((item) => (
+                              <option key={item.id} value={item.id}>
+                                {item.name}
+                              </option>
+                            ))}
+                        </select>
+                      }
 
                         {errors.job_title && (
                           <div
@@ -720,18 +811,41 @@ function EditAttendee(props) {
                     </label>
                     <div className="col-12 col-lg-5 mb-3 mb-sm-0">
                       <div className="form-group">
+                        {!companyInput ?  
+
+                        <select
+                          className={`form-control ${
+                            errors.company ? "is-invalid" : ""
+                          }`}
+                          name="company_name"
+                          value={formInput.company_name}
+                          onChange={handleCompanyChange}
+                          onBlur={handleBlur}
+                          onFocus={handleInputFocus}
+                          style={{ padding: "0.3rem 1rem", fontSize: "1rem" }}
+                        >
+                          <option value="">Select Company</option>
+
+                          {companyData.length > 0 &&
+                            companyData.map((item) => (
+                              <option key={item.id} value={item.id}>
+                                {item.name}
+                              </option>
+                            ))}
+                        </select> :  
                         <input
                           type="company_name"
                           className={`form-control ${
                             errors.company_name ? "is-invalid" : ""
                           }`}
-                          placeholder="Company Name"
+                          placeholder="Company"
                           name="company_name"
                           value={formInput.company_name}
                           onChange={handleInput}
                           onBlur={handleBlur}
                           onFocus={handleInputFocus}
-                        />
+                        /> 
+                        }
 
                         {errors.company_name && (
                           <div
@@ -757,10 +871,11 @@ function EditAttendee(props) {
                     </label>
                     <div className="col-12 col-lg-5 mb-3 mb-sm-0">
                       <div className="form-group">
+                      { industryInput ? 
                         <input
-                          type="industry"
+                          type="job_title"
                           className={`form-control ${
-                            errors.industry ? "is-invalid" : ""
+                            errors.job_title ? "is-invalid" : ""
                           }`}
                           placeholder="Industry"
                           name="industry"
@@ -769,6 +884,29 @@ function EditAttendee(props) {
                           onBlur={handleBlur}
                           onFocus={handleInputFocus}
                         />
+
+                          :
+                        <select
+                          className={`form-control ${
+                            errors.company ? "is-invalid" : ""
+                          }`}
+                          name="industry"
+                          value={formInput.industry}
+                          onChange={handleIndustryChange}
+                          onBlur={handleBlur}
+                          onFocus={handleInputFocus}
+                          style={{ padding: "0.3rem 1rem", fontSize: "1rem" }}
+                        >
+                          <option value="">Select Industry</option>
+
+                          {industryData.length > 0 &&
+                            industryData.map((item) => (
+                              <option key={item.id} value={item.id}>
+                                {item.name}
+                              </option>
+                            ))}
+                        </select>
+                      }
 
                         {errors.industry && (
                           <div

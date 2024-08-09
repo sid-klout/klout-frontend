@@ -220,7 +220,7 @@ function AllReports() {
         <h1 className="h3 mb-0 text-gray-800">All Reports</h1>
 
         <Link
-          to="/admin/reports"
+          to="/organiser/admin/reports"
           className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
           style={{
             backgroundColor: "#F5007E",

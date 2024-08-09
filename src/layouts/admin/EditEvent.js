@@ -89,7 +89,7 @@ function EditEvent(props) {
         // fetchCities(res.data.data);
       } else if (res.data.status === 400) {
         swal("Error", res.data.message, "error");
-        history.push("/admin/all-events");
+        history.push("/organiser/admin/all-events");
       }
     });
   }, [history, props.match.params.id]);
@@ -453,7 +453,7 @@ function EditEvent(props) {
 
             setErrors({});
 
-            history.push("/admin/all-events");
+            history.push("/organiser/admin/all-events");
           } else if (res.data.status === 422) {
             setErrors(res.data.errors);
           } else if (res.data.status === 400) {
@@ -461,7 +461,7 @@ function EditEvent(props) {
             setErrors(res.data.errors);
           } else if (res.data.status === 404) {
             swal("Error", res.data.message, "error");
-            history.push("/admin/all-events");
+            history.push("/organiser/admin/all-events");
           }
         })
         .finally(() => {
@@ -560,7 +560,7 @@ function EditEvent(props) {
           <div className="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 className="h3 mb-0 text-gray-800">Edit Event </h1>
             <Link
-              to={`/admin/all-events`}
+              to={`/organiser/admin/all-events`}
               className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
               style={{
                 backgroundColor: "#F5007E",

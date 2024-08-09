@@ -164,7 +164,7 @@ function AllAttendeeList(props) {
                 <i className="fas fa-user"></i>
               </Link> */}
             {/* <Link
-              to={`/admin/view-attendee-details/${item.id}`}
+              to={`/organiser/organiser/admin/view-attendee-details/${item.id}`}
               data-toggle="tooltip"
               data-placement="bottom"
               title="View Attendee Detail"
@@ -175,7 +175,7 @@ function AllAttendeeList(props) {
             </Link>
             &nbsp; &nbsp;
             <Link
-              to={`/admin/edit-attendee/${item.id}`}
+              to={`/organiser/organiser/admin/edit-attendee/${item.id}`}
               data-toggle="tooltip"
               data-placement="bottom"
               title="Edit Attendee"
@@ -208,7 +208,7 @@ function AllAttendeeList(props) {
 
         <div className="d-none d-sm-inline-block shadow-sm">
           <Link
-            to={`/admin/dashboard`}
+            to={`/organiser/admin/dashboard`}
             className="btn btn-sm btn-primary shadow-sm"
             style={{
               backgroundColor: "#F5007E",

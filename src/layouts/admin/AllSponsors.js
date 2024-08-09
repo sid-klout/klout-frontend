@@ -170,7 +170,7 @@ function AllSponsors(props) {
                 <i class="fas fa-user"></i>
               </Link> */}
             <Link
-              to={`/admin/view-sponsor-details/${item.uuid}`}
+              to={`/organiser/admin/view-sponsor-details/${item.uuid}`}
               data-toggle="tooltip"
               data-placement="bottom"
               title="View Sponsor Detail"
@@ -181,7 +181,7 @@ function AllSponsors(props) {
             </Link>
             &nbsp; &nbsp;
             <Link
-              to={`/admin/edit-sponsor/${item.uuid}`}
+              to={`/organiser/admin/edit-sponsor/${item.uuid}`}
               data-toggle="tooltip"
               data-placement="bottom"
               title="Edit Sponsor"
@@ -219,7 +219,7 @@ function AllSponsors(props) {
           </a> */}
         {/* 
           <Link
-            to="/admin/add-event"
+            to="/organiser/admin/add-event"
             className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
             style={{
               backgroundColor: "#F5007E",
@@ -233,7 +233,7 @@ function AllSponsors(props) {
 
         <div className="d-none d-sm-inline-block shadow-sm">
           {/* <Link
-            to={`/admin/dashboard`}
+            to={`/organiser/admin/dashboard`}
             className="btn btn-sm btn-primary shadow-sm"
             style={{
               backgroundColor: "#F5007E",
@@ -246,7 +246,7 @@ function AllSponsors(props) {
           </Link> */}
 
           <Link
-          to="/admin/add-sponsor"
+          to="/organiser/admin/add-sponsor"
           className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
           style={{
             backgroundColor: "#F5007E",

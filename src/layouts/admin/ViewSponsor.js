@@ -18,7 +18,7 @@ function ViewSponsor() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    axios.get(`/api/display-sponsors/${id}`).then((res) => {
+    axios.post(`/api/display-sponsors/${id}`).then((res) => {
       if (res.data.status === 200) {
         setUser(res.data.data);
       } else if (res.data.status === 400) {
@@ -53,7 +53,7 @@ function ViewSponsor() {
           <div className="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 className="h3 mb-0 text-gray-800">Sponsor Details</h1>
             <Link
-              to={`/admin/sponsors`}
+              to={`/organiser/admin/sponsors`}
               className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
               style={{
                 backgroundColor: "#F5007E",
