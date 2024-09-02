@@ -302,35 +302,35 @@ function Sidebar({ menuOpen, setMenuOpen, toggleMenu }) {
           </div>
         </li> */}
 
-        <li className="nav-item">
+        {/* <li className="nav-item">
           <Link className="nav-link" to="/organiser/admin/all-reports">
             <i class="fa fa-flag" aria-hidden="true"></i>
             <span>All Reports</span>
           </Link>
-        </li>
+        </li> */}
 
-        <li className="nav-item">
+        {/* <li className="nav-item">
           <Link className="nav-link" to="/organiser/admin/all-feedbacks">
             <i className="fas fa-table"></i>
             <span>Feedbacks</span>
           </Link>
-        </li>
+        </li> */}
 
         {/* <!-- Nav Item - Charts --> */}
-        <li className="nav-item">
+        {/* <li className="nav-item">
           <Link className="nav-link" to="/organiser/admin/get-help">
             <i className="fas fa-hands-helping"></i>
             <span>Get Help</span>
           </Link>
-        </li>
+        </li> */}
 
         {/* <!-- Nav Item - Tables --> */}
-        <li className="nav-item">
+        {/* <li className="nav-item">
           <Link className="nav-link" to="/organiser/admin/faqs">
             <i className="fa fa-solid fa-question"></i>
             <span>FAQ's</span>
           </Link>
-        </li>
+        </li> */}
 
         {/* <!-- Nav Item - Logout --> */}
         <li className="nav-item">

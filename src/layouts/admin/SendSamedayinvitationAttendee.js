@@ -11,7 +11,7 @@ import loadingGif from "../../assets/images/load.gif";
 
 import DefaultBanner from "../../assets/images/default-banner.jpg";
 
-function SendSmsAttendee(props) {
+function SendSamedayinvitationAttendee(props) {
   const history = useHistory();
 
   const eventId = props.match.params.id;
@@ -59,11 +59,11 @@ function SendSmsAttendee(props) {
   const [event, setEvent] = useState({});
 
   const [readSMSMessage, setReadSMSMessage] = useState(false);
-  const [readWhastAppMessage, setReadWhatsAppMessage] = useState(false);
+  const [readWhastAppMessage, setReadWhatsAppMessage] = useState(true);
 
   const [showAlert, setShowAlert] = useState(true);
 
-  const [showInput, setShowInput] = useState(true);
+  const [showInput, setShowInput] = useState(false);
 
   const [scheduleInput, setScheduleInput] = useState(false);
 
@@ -100,7 +100,7 @@ function SendSmsAttendee(props) {
   const [formInput, setFormInput] = useState({
     event_id: eventId,
     send_to: null,
-    send_method: "email",
+    send_method: "whatsapp",
     subject: "",
     message: "",
     start_date: currentDate,
@@ -310,7 +310,7 @@ function SendSmsAttendee(props) {
       formData.append("delivery_schedule", formInput.delivery_schedule);
 
       axios
-        .post(`/api/notifications`, formData, {
+        .post(`/api/notifications-samedayinvitation`, formData, {
           headers: { "Content-Type": "multipart/form-data" },
         })
         .then((res) => {
@@ -452,7 +452,7 @@ function SendSmsAttendee(props) {
                     <label>Send By</label>
 
                     <div className="form-group ml-4">
-                      <div className="form-check form-check-inline">
+                      {/* <div className="form-check form-check-inline">
                         <input
                           className="form-check-input"
                           type="radio"
@@ -468,7 +468,7 @@ function SendSmsAttendee(props) {
                           Email
                         </label>
                       </div>
-                      {/* <div className="form-check form-check-inline">
+                      <div className="form-check form-check-inline">
                         <input
                           className="form-check-input"
                           type="radio"
@@ -598,7 +598,8 @@ function SendSmsAttendee(props) {
                           >
                             Hi "<b>firstName</b>", just a reminder for our event
                             "<b>Event-Title</b>" on "<b>Event-Date-Time</b>".We
-                            look forward to seeing you there!
+                            look forward to seeing you there! Regards, KloutClub
+                            by Insightner Marketing Services.
                           </p>
                         </div>
                       </div>
@@ -620,10 +621,12 @@ function SendSmsAttendee(props) {
                               borderRadius: "5px",
                             }}
                           >
-                            Hi "<b>firstName</b>", just a reminder for our event
-                            "<b>Event-Title</b>" on "<b>Event-Date-Time</b>". We're excited to welcome you to this exclusive event.<br /><br />
+                            
+                            Hi "<b>firstName</b>",
+                            This is a friendly reminder about the upcoming event "<b>Event-Title</b>" on "<b>Event-Date-Time</b>" the event is scheduled for today at "<b>Event-Venue</b>". We're excited to welcome you to this exclusive event and look forward to meeting you.
 
 To ensure a smooth check-in experience, please download the Klout Club app in advance. You can download it here <b>https://onelink.to/r3fzb9</b>.
+
                           </p>
                         </div>
                       </div>
@@ -1250,4 +1253,4 @@ To ensure a smooth check-in experience, please download the Klout Club app in ad
   );
 }
 
-export default SendSmsAttendee;
+export default SendSamedayinvitationAttendee;

@@ -19,6 +19,7 @@ function AllAttendee(props) {
   const [firstNameFilter, setFirstNameFilter] = useState("");
   const [emailIDFilter, setEmailIDFilter] = useState("");
   const [companyFilter, setCompanyFilter] = useState("");
+  const [checkinFilter, setCheckinFilter] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
   const [forward, setIsForwarding] = useState(false);
@@ -70,6 +71,16 @@ function AllAttendee(props) {
         .toLowerCase()
         .includes(emailIDFilter.toLowerCase());
 
+      const companyMatch = attendee.company_name
+        .toLowerCase()
+        .includes(companyFilter.toLowerCase());
+
+        const checkinMatch =
+        checkinFilter === "" || 
+        (checkinFilter === "1" && attendee.check_in == 1) ||
+        (checkinFilter === "0" && attendee.check_in == 0);
+
+
       // const companyMatch = attendee.company_name.includes(companyFilter);
 
       // if (attendee.phone_number !== null) {
@@ -80,7 +91,7 @@ function AllAttendee(props) {
       //   phoneMatch = attendee.phone_number
       // }
 
-      return firstnameMatch && emailMatch; // && companyMatch;
+      return firstnameMatch && emailMatch && companyMatch && checkinMatch; // && companyMatch;
     });
 
     // Apply search filter
@@ -89,7 +100,7 @@ function AllAttendee(props) {
     );
 
     setFilteredAttendees(searchFiltered);
-  }, [firstNameFilter, emailIDFilter, companyFilter, search, attendees]);
+  }, [firstNameFilter, emailIDFilter, companyFilter,checkinFilter, search, attendees]);
 
   const handlePageChange = (selectedPage) => {
     setCurrentPage(selectedPage);
@@ -309,6 +320,38 @@ function AllAttendee(props) {
               </Link>
               {/* )} */}
               &nbsp; &nbsp;
+              {/* {isPast && ( */}
+              <Link
+                // to={`admin/add-attendee/${event_id}`}
+                to={`/organiser/admin/send-notification-attendee-invitation/${event_id}`}
+                className="btn btn-sm btn-dark shadow-sm my-2"
+                style={{
+                  borderColor: "#0dcaf0",
+                  color: "white",
+                  borderRadius: "12px",
+                }}
+              >
+                <i className="fa fa-solid fa-paper-plane"></i> &nbsp; Send
+                Invitation
+              </Link>
+              {/* )} */}
+              &nbsp; &nbsp;
+              {/* {isPast && ( */}
+              <Link
+                // to={`admin/add-attendee/${event_id}`}
+                to={`/organiser/admin/send-notification-attendee-samedayinvitaion/${event_id}`}
+                className="btn btn-sm btn-warning shadow-sm my-2"
+                style={{
+                  borderColor: "#0dcaf0",
+                  color: "white",
+                  borderRadius: "12px",
+                }}
+              >
+                <i className="fa fa-solid fa-paper-plane"></i> &nbsp; Send
+                Same Day Reminder
+              </Link>
+              {/* )} */}
+              &nbsp; &nbsp;
               <Link
                 // to={`admin/add-attendee/${event_id}`}
                 // to={`/organiser/admin/forward-attendee-to-sponsor/${event_id}`}
@@ -407,6 +450,18 @@ function AllAttendee(props) {
                   className="form-control"
                   onChange={(e) => setCompanyFilter(e.target.value)}
                 />
+              </div>
+
+              <div className="col-12 col-lg-3 mb-3">
+                <select
+                  value={checkinFilter}
+                  className="form-control"
+                  onChange={(e) => setCheckinFilter(e.target.value)}
+                >
+                  <option value="">Filter by Check In</option>
+                  <option value="1">Yes</option>
+                  <option value="0">No</option>
+                </select>
               </div>
 
               {/* <div className="col-2">

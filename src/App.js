@@ -27,10 +27,12 @@ import Dashboard from "./layouts/admin/Dashboard";
 
 import { Provider } from "react-redux";
 import store from "./store";
+import CheckInForm from "./components/CheckInForm";
+import SuccessPage from "./components/SuccessPage";
 
-// axios.defaults.baseURL = "https://api.klout.club/";
+axios.defaults.baseURL = "https://api.klout.club/";
 
-axios.defaults.baseURL = "http://localhost:8000/";
+// axios.defaults.baseURL = "http://localhost:8000/";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 axios.defaults.headers.post["Accept"] = "application/json";
@@ -56,6 +58,8 @@ function App() {
       <Router basename="/organiser">
         <Switch>
           <Route exact path="/" component={LandingHome} />
+          <Route exact path="/event/L&D-confex-and-awards/check-in" component={CheckInForm} />
+          <Route path="/success" component={SuccessPage} />
 
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />

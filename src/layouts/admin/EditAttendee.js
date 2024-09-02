@@ -86,6 +86,7 @@ function EditAttendee(props) {
 
     if (value == 252) {
       setDesignationInput(true);
+      setFormInput({...formInput, job_title: ""});
     } else {
       setDesignationInput(false);
       setFormInput((prevData) => ({ ...prevData, job_title: value }));
@@ -99,6 +100,7 @@ function EditAttendee(props) {
 
     if (value == 212) {
       setIndustryInput(true);
+      setFormInput({ ...formInput, industry: "" });
     } else {
       setIndustryInput(false);
       setFormInput((prevData) => ({ ...prevData, industry: value }));
@@ -113,6 +115,7 @@ function EditAttendee(props) {
 
     if (value == 439) {
       setCompanyInput(true);
+      setFormInput({ ...formInput, company_name: "" })
     } else {
       setCompanyInput(false);
       setFormInput((prevData) => ({ ...prevData, company_name:  value }));
@@ -756,7 +759,7 @@ function EditAttendee(props) {
                           className={`form-control ${
                             errors.job_title ? "is-invalid" : ""
                           }`}
-                          placeholder="Job Title"
+                          placeholder="Enter Your Job Title"
                           name="job_title"
                           value={formInput.job_title}
                           onChange={handleInput}
@@ -776,7 +779,7 @@ function EditAttendee(props) {
                           onFocus={handleInputFocus}
                           style={{ padding: "0.3rem 1rem", fontSize: "1rem" }}
                         >
-                          <option value="">Select Designation</option>
+                          <option value={formInput.job_title*1 ? 'Select Designation': formInput.job_title}>{formInput.job_title*1 ? 'Select Designation': formInput.job_title}</option>
 
                           {designationData.length > 0 &&
                             designationData.map((item) => (
@@ -824,7 +827,7 @@ function EditAttendee(props) {
                           onFocus={handleInputFocus}
                           style={{ padding: "0.3rem 1rem", fontSize: "1rem" }}
                         >
-                          <option value="">Select Company</option>
+                          <option value={formInput.company_name*1 ? 'Select Company': formInput.company_name }>{formInput.company_name*1 ? 'Select Company': formInput.company_name }</option>
 
                           {companyData.length > 0 &&
                             companyData.map((item) => (
@@ -838,7 +841,7 @@ function EditAttendee(props) {
                           className={`form-control ${
                             errors.company_name ? "is-invalid" : ""
                           }`}
-                          placeholder="Company"
+                          placeholder="Enter Your Company"
                           name="company_name"
                           value={formInput.company_name}
                           onChange={handleInput}
@@ -873,11 +876,11 @@ function EditAttendee(props) {
                       <div className="form-group">
                       { industryInput ? 
                         <input
-                          type="job_title"
+                          type="industry"
                           className={`form-control ${
                             errors.job_title ? "is-invalid" : ""
                           }`}
-                          placeholder="Industry"
+                          placeholder="Enter Your Industry"
                           name="industry"
                           value={formInput.industry}
                           onChange={handleInput}
@@ -897,7 +900,7 @@ function EditAttendee(props) {
                           onFocus={handleInputFocus}
                           style={{ padding: "0.3rem 1rem", fontSize: "1rem" }}
                         >
-                          <option value="">Select Industry</option>
+                          <option value={formInput.industry*1 ? 'Select Industry': formInput.industry }>{formInput.industry*1 ? 'Select Industry': formInput.industry }</option>
 
                           {industryData.length > 0 &&
                             industryData.map((item) => (

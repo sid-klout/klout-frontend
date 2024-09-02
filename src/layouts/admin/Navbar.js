@@ -368,11 +368,11 @@ function Navbar({ menuOpen, setMenuOpen, toggleMenu }) {
               className="dropdown-menu dropdown-menu-right shadow animated--grow-in"
               aria-labelledby="userDropdown"
             >
-              <Link className="dropdown-item" to="/organiser/organiser/admin/profile">
+              <Link className="dropdown-item" to="/organiser/admin/profile">
                 <i className="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                 Profile
               </Link>
-              <Link className="dropdown-item" to="/organiser/organiser/admin/change-password">
+              <Link className="dropdown-item" to="/organiser/admin/change-password">
                 <i className="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                 Change Password
               </Link>

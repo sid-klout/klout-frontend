@@ -38,6 +38,9 @@ import AddAgenda from "../layouts/admin/AddAgenda";
 import ViewAgenda from "../layouts/admin/ViewAgenda";
 import EditAgenda from "../layouts/admin/EditAgenda";
 import AllPendingAttendee from "../layouts/admin/AllPendingAttendee";
+import SendWhatsappAttendee from "../layouts/admin/SendWhatsappAttendee";
+import SendSamedayinvitationAttendee from "../layouts/admin/SendSamedayinvitationAttendee";
+import CheckInForm from "../components/CheckInForm";
 
 const routes = [
   { path: "/admin", exact: true, name: "Admin", component: Dashboard },
@@ -78,6 +81,18 @@ const routes = [
     exact: true,
     name: "SendSmsAttendee",
     component: SendSmsAttendee,
+  },
+  {
+    path: "/organiser/admin/send-notification-attendee-invitation/:id",
+    exact: true,
+    name: "SendWhatsappAttendee",
+    component: SendWhatsappAttendee,
+  },
+  {
+    path: "/organiser/admin/send-notification-attendee-samedayinvitaion/:id",
+    exact: true,
+    name: "SendSamedayinvitationAttendee",
+    component: SendSamedayinvitationAttendee,
   },
   {
     path: "/organiser/admin/send-mail-attendee/:id",
@@ -274,6 +289,7 @@ const routes = [
     name: "AllPendingAttendee",
     component: AllPendingAttendee,
   },
+  
 ];
 
 export default routes;

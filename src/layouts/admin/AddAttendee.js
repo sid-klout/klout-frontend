@@ -82,6 +82,7 @@ function AddAttendee(props) {
 
     if (value == 252) {
       setDesignationInput(true);
+      setFormInput({...formInput, job_title: ""});
     } else {
       setDesignationInput(false);
       setFormInput((prevData) => ({ ...prevData, job_title: value }));
@@ -95,6 +96,7 @@ function AddAttendee(props) {
 
     if (value == 212) {
       setIndustryInput(true);
+      setFormInput({ ...formInput, industry: "" });
     } else {
       setIndustryInput(false);
       setFormInput((prevData) => ({ ...prevData, industry: value }));
@@ -109,6 +111,7 @@ function AddAttendee(props) {
 
     if (value == 439) {
       setCompanyInput(true);
+      setFormInput({ ...formInput, company_name: "" })
     } else {
       setCompanyInput(false);
       setFormInput((prevData) => ({ ...prevData, company_name:  value }));
@@ -926,7 +929,7 @@ function AddAttendee(props) {
                           className={`form-control ${
                             errors.job_title ? "is-invalid" : ""
                           }`}
-                          placeholder="Job Title"
+                          placeholder="Enter Your Job Title"
                           name="job_title"
                           value={formInput.job_title}
                           onChange={handleInput}
@@ -1021,7 +1024,7 @@ function AddAttendee(props) {
                           className={`form-control ${
                             errors.company_name ? "is-invalid" : ""
                           }`}
-                          placeholder="Company"
+                          placeholder="Enter Your Company"
                           name="company_name"
                           value={formInput.company_name}
                           onChange={handleInput}
@@ -1073,7 +1076,7 @@ function AddAttendee(props) {
                           className={`form-control ${
                             errors.job_title ? "is-invalid" : ""
                           }`}
-                          placeholder="Industry"
+                          placeholder="Enter Your Industry"
                           name="industry"
                           value={formInput.industry}
                           onChange={handleInput}
