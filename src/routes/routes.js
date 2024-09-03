@@ -41,6 +41,7 @@ import AllPendingAttendee from "../layouts/admin/AllPendingAttendee";
 import SendWhatsappAttendee from "../layouts/admin/SendWhatsappAttendee";
 import SendSamedayinvitationAttendee from "../layouts/admin/SendSamedayinvitationAttendee";
 import CheckInForm from "../components/CheckInForm";
+import WhatsappReport from "../layouts/admin/WhatsappReport";
 
 const routes = [
   { path: "/admin", exact: true, name: "Admin", component: Dashboard },
@@ -288,6 +289,12 @@ const routes = [
     exact: true,
     name: "AllPendingAttendee",
     component: AllPendingAttendee,
+  },
+  {
+    path: "/organiser/admin/whatsapp-report/:id",
+    exact: true,
+    name: "WhatsappReport",
+    component: WhatsappReport,
   },
   
 ];

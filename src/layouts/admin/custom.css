@@ -1,0 +1,44 @@
+.btn-active {
+    background-color: #007bff !important;
+    color: white !important;
+  }
+
+
+  .card {
+    cursor: pointer !important;
+  }
+  
+  .clickable-card {
+    transition: box-shadow 0.3s ease, transform 0.3s ease !important;
+  }
+  
+  .clickable-card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) m !important;
+    transform: scale(1.02);
+  }
+  
+  .card-active {
+    border-width: 2px !important;
+    border-color: #007bff !important;
+  }
+
+
+.card-active {
+    background-color: #91c2f7 !important;
+  }
+  
+  .card-active.border-primary {
+    background-color: #91c2f7 !important;
+  }
+  
+  .card-active.border-success {
+    background-color: #6ff58f !important;
+  }
+  
+  .card-active.border-info {
+    background-color: #bef560 !important;
+  }
+  
+  .card-active.border-danger {
+    background-color: #febbc1 !important;
+  }

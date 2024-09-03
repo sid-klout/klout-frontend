@@ -302,12 +302,12 @@ function Sidebar({ menuOpen, setMenuOpen, toggleMenu }) {
           </div>
         </li> */}
 
-        {/* <li className="nav-item">
+        <li className="nav-item">
           <Link className="nav-link" to="/organiser/admin/all-reports">
             <i class="fa fa-flag" aria-hidden="true"></i>
             <span>All Reports</span>
           </Link>
-        </li> */}
+        </li> 
 
         {/* <li className="nav-item">
           <Link className="nav-link" to="/organiser/admin/all-feedbacks">
