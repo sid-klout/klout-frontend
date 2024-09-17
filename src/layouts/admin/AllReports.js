@@ -4,12 +4,6 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 
-const data = Array.from({ length: 15 }, (_, i) => ({
-  id: i + 1,
-  name: `Event ${i + 1}`,
-  image: 'https://via.placeholder.com/150', // Image size
-}));
-
 function AllReports() {
     const authToken = useSelector(state => state.auth.token);
     const [loading, setLoading] = useState(true);
@@ -49,7 +43,7 @@ function AllReports() {
         {currentItems.map((item) => (
           <div className="col-md-4 mb-4" key={item.id}>
             <div className="card">
-              <img src={'https:api.klout.club/'+item.image} style={{ height: "180px", objectFit: "cover" }} className="card-img-top" alt={item.name} />
+              <img src={'https://api.klout.club/'+item.image} style={{ height: "180px", objectFit: "cover" }} className="card-img-top" alt={item.name} />
               <div className="card-body">
                 <h5 className="card-title">{item.name}</h5>
                 <div className="d-flex">

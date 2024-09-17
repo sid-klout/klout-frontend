@@ -58,7 +58,7 @@ function App() {
       <Router basename="/organiser">
         <Switch>
           <Route exact path="/" component={LandingHome} />
-          <Route exact path="/event/L&D-confex-and-awards/check-in" component={CheckInForm} />
+          <Route exact path="/event/check-in" component={CheckInForm} />
           <Route path="/success" component={SuccessPage} />
 
           <Route path="/login" component={Login} />

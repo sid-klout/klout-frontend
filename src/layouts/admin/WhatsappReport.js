@@ -7,11 +7,12 @@ function WhatsappReport(props) {
   const event_id = props.match.params.id;
   const [event, setEvent] = useState([]);
   const [profile, setProfile] = useState([]);
-  const [data, setData] = useState([])
+  const [data, setData] = useState([]);
+  const [tempData, setTempData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const [selectedTemplate, setSelectedTemplate] = useState('delegate_invitation');
-  const [activeCard, setActiveCard] = useState('card1'); 
+  const [activeCard, setActiveCard] = useState('total_sent_messages'); 
   const authToken = useSelector(state => state.auth.token);
   const [totalMessage, setTotalMessage] = useState(0);
   const [totalDelivered, setTotalDelivered] = useState(0);
@@ -34,8 +35,9 @@ function WhatsappReport(props) {
           }).then((res) => {
             if (res.data.status) {
                 setData(res.data.data);
+                setTempData(res.data.data);
                 setTotalMessage(res.data.data.length)
-                const delivered = res.data.data.filter(item => item.messageID.messageStatus === "Delivered");
+                const delivered = res.data.data.filter(item => item.messageID.messageStatus !== "Failed");
                 setTotalDelivered(delivered.length);
                 const read = res.data.data.filter(item => item.messageID.messageStatus === "Read");
                 setTotalRead(read.length)
@@ -65,9 +67,34 @@ function WhatsappReport(props) {
   const totalPages = Math.ceil(tableData.length / itemsPerPage);
 
   const handleCardClick = (card) => {
+    let newData = [];
+  
+    if(card === 'total_delivered_messages'){
+      newData = tempData.filter(item => item.messageID && item.messageID.messageStatus !== 'Failed');
+    } else if(card === 'total_read_messages'){
+      newData = tempData.filter(item => item.messageID && item.messageID.messageStatus === 'Read');
+    } else if(card === 'total_failed_messages'){
+      newData = tempData.filter(item => item.messageID && item.messageID.messageStatus === 'Failed');
+    }else{
+      newData = structuredClone(tempData);
+      
+    }
+  
+    setData(newData);
     setActiveCard(card);
-    
   };
+
+  // function to convert the date to normal date for the user to read properly
+  function normalDateFormat(date){
+    const newDate = new Date(date);
+    const readableDate = newDate.toLocaleString();
+    return readableDate;
+  }
+
+  // function to capital the first letter of the name
+  function capitalizeFirstLetter(word){
+    return word[0].toUpperCase() + word.slice(1);
+  }
 
   return (
     <div className="container">
@@ -79,21 +106,21 @@ function WhatsappReport(props) {
           <button
             className={`btn ${selectedTemplate === 'delegate_invitation' ? 'btn-active' : 'btn-outline-primary'}`}
             style={{ fontWeight: '600' }}
-            onClick={() => {setSelectedTemplate('delegate_invitation'); setActiveCard('card1')}}
+            onClick={() => {setSelectedTemplate('delegate_invitation'); setActiveCard('total_sent_messages')}}
           >
             Invitation 
           </button>
           <button
             className={`btn ${selectedTemplate === 'event_downloadapp' ? 'btn-active' : 'btn-outline-primary'}`}
             style={{ fontWeight: '600' }}
-            onClick={() => {setSelectedTemplate('event_downloadapp'); setActiveCard('card1')}}
+            onClick={() => {setSelectedTemplate('event_downloadapp'); setActiveCard('total_sent_messages')}}
           >
             Reminder
           </button>
           <button
             className={`btn ${selectedTemplate === 'event_reminder_today' ? 'btn-active' : 'btn-outline-primary'}`}
             style={{ fontWeight: '600' }}
-            onClick={() => {setSelectedTemplate('event_reminder_today'); setActiveCard('card1')}}
+            onClick={() => {setSelectedTemplate('event_reminder_today'); setActiveCard('total_sent_messages')}}
           >
             Same Day Invitation
           </button>
@@ -104,8 +131,8 @@ function WhatsappReport(props) {
       <div className="row mb-4">
         <div className="col-md-3 mb-3">
           <div
-            className={`card border-primary clickable-card ${activeCard === 'card1' ? 'card-active' : ''}`}
-            onClick={() => handleCardClick('card1')}
+            className={`card border-primary clickable-card ${activeCard === 'total_sent_messages' ? 'card-active' : ''}`}
+            onClick={() => handleCardClick('total_sent_messages')}
           >
             <div className="card-body text-center">
               <h5 className="card-title">Sent Messages</h5>
@@ -115,8 +142,8 @@ function WhatsappReport(props) {
         </div>
         <div className="col-md-3 mb-3">
           <div
-            className={`card border-success clickable-card ${activeCard === 'card2' ? 'card-active' : ''}`}
-            onClick={() => handleCardClick('card2')}
+            className={`card border-success clickable-card ${activeCard === 'total_delivered_messages' ? 'card-active' : ''}`}
+            onClick={() => handleCardClick('total_delivered_messages')}
           >
             <div className="card-body text-center">
               <h5 className="card-title">Delivered Messages</h5>
@@ -126,8 +153,8 @@ function WhatsappReport(props) {
         </div>
         <div className="col-md-3 mb-3">
           <div
-            className={`card border-info clickable-card ${activeCard === 'card3' ? 'card-active' : ''}`}
-            onClick={() => handleCardClick('card3')}
+            className={`card border-info clickable-card ${activeCard === 'total_read_messages' ? 'card-active' : ''}`}
+            onClick={() => handleCardClick('total_read_messages')}
           >
             <div className="card-body text-center">
               <h5 className="card-title">Read Messages</h5>
@@ -137,8 +164,8 @@ function WhatsappReport(props) {
         </div>
         <div className="col-md-3 mb-3">
           <div
-            className={`card border-danger clickable-card ${activeCard === 'card4' ? 'card-active' : ''}`}
-            onClick={() => handleCardClick('card4')}
+            className={`card border-danger clickable-card ${activeCard === 'total_failed_messages' ? 'card-active' : ''}`}
+            onClick={() => handleCardClick('total_failed_messages')}
           >
             <div className="card-body text-center">
               <h5 className="card-title">Failed Messages</h5>
@@ -157,6 +184,7 @@ function WhatsappReport(props) {
             <th>Name</th>
             <th>Phone Number</th>
             <th>Message Status</th>
+            <th>Date</th>
           </tr>
         </thead>
         <tbody>
@@ -164,9 +192,10 @@ function WhatsappReport(props) {
             <tr key={item._id}>
               <td>{index+1}</td>
               {/* <td>{item.eventName}</td> */}
-              <td>{item.firstName}</td>
-              <td>{item.messageID.customerPhoneNumber ? item.messageID.customerPhoneNumber : ""}</td>
-              <td>{item.messageID.messageStatus ? item.messageID.messageStatus : ""}</td>
+              <td>{item.firstName ? capitalizeFirstLetter(item.firstName) : ""}</td>
+              <td>{item.messageID && item.messageID.customerPhoneNumber ? item.messageID.customerPhoneNumber : ""}</td>
+              <td>{item.messageID && item.messageID.messageStatus ? item.messageID.messageStatus : ""}</td>
+              <td>{item.messageID && item.messageID.timestamp ? normalDateFormat(item.messageID.timestamp) : ""}</td>
             </tr>
           ))}
         </tbody>

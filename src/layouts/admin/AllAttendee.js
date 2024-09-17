@@ -20,6 +20,7 @@ function AllAttendee(props) {
   const [emailIDFilter, setEmailIDFilter] = useState("");
   const [companyFilter, setCompanyFilter] = useState("");
   const [checkinFilter, setCheckinFilter] = useState("");
+  const [roleFilter, setRoleFilter] = useState("All"); // Add state for role filter
   const [currentPage, setCurrentPage] = useState(1);
 
   const [forward, setIsForwarding] = useState(false);
@@ -61,7 +62,7 @@ function AllAttendee(props) {
   }, []);
 
   useEffect(() => {
-    // Apply filters whenever name, email, or phoneFilter changes
+    // Apply filters whenever name, email, phoneFilter or roleFilter changes
     const filtered = attendees.filter((attendee) => {
       const firstnameMatch = attendee.first_name
         .toLowerCase()
@@ -75,23 +76,15 @@ function AllAttendee(props) {
         .toLowerCase()
         .includes(companyFilter.toLowerCase());
 
-        const checkinMatch =
+      const checkinMatch =
         checkinFilter === "" || 
         (checkinFilter === "1" && attendee.check_in == 1) ||
         (checkinFilter === "0" && attendee.check_in == 0);
 
+      const roleMatch =
+        roleFilter === "All" || attendee.status.toLowerCase() === roleFilter.toLowerCase();
 
-      // const companyMatch = attendee.company_name.includes(companyFilter);
-
-      // if (attendee.phone_number !== null) {
-      // phoneMatch = attendee.phone_number.includes(phoneFilter);
-      // }
-      // else
-      // {
-      //   phoneMatch = attendee.phone_number
-      // }
-
-      return firstnameMatch && emailMatch && companyMatch && checkinMatch; // && companyMatch;
+      return firstnameMatch && emailMatch && companyMatch && checkinMatch && roleMatch;
     });
 
     // Apply search filter
@@ -100,7 +93,7 @@ function AllAttendee(props) {
     );
 
     setFilteredAttendees(searchFiltered);
-  }, [firstNameFilter, emailIDFilter, companyFilter,checkinFilter, search, attendees]);
+  }, [firstNameFilter, emailIDFilter, companyFilter, checkinFilter, roleFilter, search, attendees]);
 
   const handlePageChange = (selectedPage) => {
     setCurrentPage(selectedPage);
@@ -124,11 +117,9 @@ function AllAttendee(props) {
   };
 
   const capitalizeWord = (str) => {
-    // return str.charAt(0).toUpperCase() + str.slice(1);
     return str;
   };
 
-  //send attendee list to sponsors by  email
   const sendAttendeeListByEmail = (e, id) => {
     e.preventDefault();
 
@@ -209,25 +200,15 @@ function AllAttendee(props) {
       return (
         <tr key={item.id}>
           <td>{item.id}</td>
-          <td>{capitalizeWord(item.first_name)}</td>
-          <td>{capitalizeWord(item.last_name)}</td>
-          <td>{item.job_title}</td>
-          <td>{capitalizeWord(item.company_name)}</td>
+          <td>{capitalizeFirstLetter(item.first_name)}</td>
+          <td>{capitalizeFirstLetter(item.last_name)}</td>
+          <td>{capitalizeFirstLetter(item.job_title)}</td>
+          <td>{capitalizeFirstLetter(item.company_name)}</td>
           <td>{item.email_id}</td>
           <td>{item.phone_number === null ? "" : item.phone_number}</td>
-          <td>{capitalizeWord(item.status)}</td>
+          <td>{capitalizeFirstLetter(item.status)}</td>
           <td>{item.check_in == 1 ? "Yes" : "No"}</td>
           <td className="d-flex">
-            {/* <Link
-              to={`add-attendee/${item.id}`}
-              data-toggle="tooltip"
-              data-placement="bottom"
-              title="Add Attendees"
-              className="btn btn-sm btn-secondary btn-circle"
-              style={{ borderRadius: "50%" }}
-            >
-              <i className="fas fa-user"></i>
-            </Link> */}
             <Link
               to={`/organiser/admin/view-attendee-details/${item.uuid}`}
               data-toggle="tooltip"
@@ -266,12 +247,15 @@ function AllAttendee(props) {
     });
   }
 
+  function capitalizeFirstLetter(word) {
+    return word[0].toUpperCase() + word.slice(1);
+  }
+
   return (
     <>
       <div className="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 className="h3 mb-0 text-gray-800">
-          All Attendees for Event - {event.title} - Total Attendee -{" "}
-          {attendees.length}
+          All Attendees for Event - {event.title} - Total Attendee - {attendees.length}
         </h1>
 
         <div className="d-none d-sm-inline-block shadow-sm py-3 px-3">
@@ -292,8 +276,6 @@ function AllAttendee(props) {
             to={`/organiser/admin/add-attendee/${event_id}`}
             className="btn btn-sm btn-primary shadow-sm"
             style={{
-              // backgroundColor: "#F5007E",
-              // borderColor: "#F5007E",
               color: "white",
               borderRadius: "12px",
             }}
@@ -304,9 +286,7 @@ function AllAttendee(props) {
           {attendees.length > 0 && (
             <>
               &nbsp; &nbsp;
-              {/* {isPast && ( */}
               <Link
-                // to={`admin/add-attendee/${event_id}`}
                 to={`/organiser/admin/send-notification-attendee/${event_id}`}
                 className="btn btn-sm btn-info shadow-sm my-2"
                 style={{
@@ -318,11 +298,8 @@ function AllAttendee(props) {
                 <i className="fa fa-solid fa-paper-plane"></i> &nbsp; Send
                 Reminder
               </Link>
-              {/* )} */}
               &nbsp; &nbsp;
-              {/* {isPast && ( */}
               <Link
-                // to={`admin/add-attendee/${event_id}`}
                 to={`/organiser/admin/send-notification-attendee-invitation/${event_id}`}
                 className="btn btn-sm btn-dark shadow-sm my-2"
                 style={{
@@ -334,11 +311,8 @@ function AllAttendee(props) {
                 <i className="fa fa-solid fa-paper-plane"></i> &nbsp; Send
                 Invitation
               </Link>
-              {/* )} */}
               &nbsp; &nbsp;
-              {/* {isPast && ( */}
               <Link
-                // to={`admin/add-attendee/${event_id}`}
                 to={`/organiser/admin/send-notification-attendee-samedayinvitaion/${event_id}`}
                 className="btn btn-sm btn-warning shadow-sm my-2"
                 style={{
@@ -350,12 +324,8 @@ function AllAttendee(props) {
                 <i className="fa fa-solid fa-paper-plane"></i> &nbsp; Send
                 Same Day Reminder
               </Link>
-              {/* )} */}
               &nbsp; &nbsp;
               <Link
-                // to={`admin/add-attendee/${event_id}`}
-                // to={`/organiser/admin/forward-attendee-to-sponsor/${event_id}`}
-
                 onClick={(e) => sendAttendeeListByEmail(e, event_id)}
                 className="btn btn-sm btn-danger shadow-sm my-2"
                 style={{
@@ -386,7 +356,6 @@ function AllAttendee(props) {
           )}
           &nbsp; &nbsp;
           <Link
-            // to={admin/add-attendee/${event_id}}
             to={`/organiser/admin/pending-attendee/${event_id}`}
             className="btn btn-sm btn-info shadow-sm my-2"
             style={{
@@ -397,22 +366,10 @@ function AllAttendee(props) {
           >
             <i className="fa fa-solid fa-user"></i> &nbsp; Pending User Request
           </Link>
-          {/* <Link
-            to={`/organiser/admin/send-mail-attendee/${event_id}`}
-            className="btn btn-sm btn-danger shadow-sm"
-            style={{
-              borderColor: "#dc3545",
-              color: "white",
-              borderRadius: "12px",
-            }}
-          >
-            <i className=" fa fa-envelope"></i> Send Email
-          </Link> */}
         </div>
       </div>
 
       <div className="row p-3">
-        {/* <div className="col-md-12"> */}
         <div className="card shadow mb-4">
           <div className="card-header py-3">
             <h6 className="m-0 font-weight-bold text-primary">Attendee List</h6>
@@ -420,7 +377,6 @@ function AllAttendee(props) {
           <div className="card-body">
             <div className="row pb-4">
               <div className="col-12 col-lg-3 mb-3">
-                {/* Name filter input */}
                 <input
                   type="text"
                   placeholder="Filter by First Name"
@@ -431,7 +387,6 @@ function AllAttendee(props) {
               </div>
 
               <div className="col-12 col-lg-3 mb-3">
-                {/* Email filter input */}
                 <input
                   type="text"
                   placeholder="Filter by Email"
@@ -442,7 +397,6 @@ function AllAttendee(props) {
               </div>
 
               <div className="col-12 col-lg-3 mb-3">
-                {/* Phone filter input */}
                 <input
                   type="text"
                   placeholder="Filter by Company"
@@ -464,16 +418,21 @@ function AllAttendee(props) {
                 </select>
               </div>
 
-              {/* <div className="col-2">
-                {/* Search input */}
-              {/* <input
-                  type="text"
-                  placeholder="Search"
-                  value={search}
+              <div className="col-12 col-lg-3 mb-3">
+                <select
+                  value={roleFilter}
                   className="form-control"
-                  onChange={(e) => setSearch(e.target.value)}
-                />
-              </div> */}
+                  onChange={(e) => setRoleFilter(e.target.value)}
+                >
+                  <option value="All">All Roles</option>
+                  <option value="Speaker">Speaker</option>
+                  <option value="Delegate">Delegate</option>
+                  <option value="Sponsor">Sponsor</option>
+                  <option value="Moderator">Moderator</option>
+                  <option value="Panelist">Panelist</option>
+                  <option value="Others">Others</option>
+                </select>
+              </div>
 
               <div className="col-12 col-lg-3">
                 {attendees.length > 0 && (
@@ -481,8 +440,6 @@ function AllAttendee(props) {
                     onClick={exportToExcel}
                     className="btn btn-success"
                     style={{
-                      // backgroundColor: "#F5007E",
-                      // borderColor: "#F5007E",
                       color: "white",
                       borderRadius: "12px",
                     }}
@@ -523,7 +480,6 @@ function AllAttendee(props) {
                 </tbody>
               </table>
 
-              {/* Pagination */}
               <nav aria-label="Page navigation comments" className="mt-4">
                 {filteredAttendees.length > 0 && (
                   <ReactPaginate
