@@ -11,6 +11,8 @@ function AllAttendee(props) {
   const [loading, setLoading] = useState(false);
   const [attendees, setAddendees] = useState([]);
   const [filteredAttendees, setFilteredAttendees] = useState([]);
+  const [excelAttendees, setExcelAttendees] = useState([]);
+
   const [event, setEvent] = useState([]);
 
   const [search, setSearch] = useState("");
@@ -18,13 +20,15 @@ function AllAttendee(props) {
   const [emailIDFilter, setEmailIDFilter] = useState("");
   const [companyFilter, setCompanyFilter] = useState("");
   const [checkinFilter, setCheckinFilter] = useState("");
-  const [roleFilter, setRoleFilter] = useState("All");
+  const [roleFilter, setRoleFilter] = useState("All"); // Add state for role filter
   const [currentPage, setCurrentPage] = useState(1);
 
   const [forward, setIsForwarding] = useState(false);
 
   const itemsPerPage = 10;
+
   const [event_id, setEventID] = useState(props.match.params.id);
+
   const [isPast, setIsPast] = useState(false);
 
   useEffect(() => {
@@ -32,6 +36,7 @@ function AllAttendee(props) {
       if (res.data.status === 200) {
         setAddendees(res.data.data);
         setFilteredAttendees(res.data.data);
+        setExcelAttendees(res.data.excel_data);
       }
       setLoading(false);
     });
@@ -40,9 +45,13 @@ function AllAttendee(props) {
       if (res.data.status === 200) {
         setEvent(res.data.data);
 
+        // Get the current date
         const currentDate = new Date();
+
+        // Convert event_end_date to a Date object
         const eventEndDateObj = new Date(res.data.data.event_end_date);
 
+        // Compare the dates
         if (eventEndDateObj < currentDate) {
           setIsPast(true);
         } else {
@@ -53,6 +62,7 @@ function AllAttendee(props) {
   }, []);
 
   useEffect(() => {
+    // Apply filters whenever name, email, phoneFilter or roleFilter changes
     const filtered = attendees.filter((attendee) => {
       const firstnameMatch = attendee.first_name
         .toLowerCase()
@@ -67,17 +77,17 @@ function AllAttendee(props) {
         .includes(companyFilter.toLowerCase());
 
       const checkinMatch =
-        checkinFilter === "" ||
+        checkinFilter === "" || 
         (checkinFilter === "1" && attendee.check_in == 1) ||
         (checkinFilter === "0" && attendee.check_in == 0);
 
       const roleMatch =
-        roleFilter === "All" ||
-        attendee.status.toLowerCase() === roleFilter.toLowerCase();
+        roleFilter === "All" || attendee.status.toLowerCase() === roleFilter.toLowerCase();
 
       return firstnameMatch && emailMatch && companyMatch && checkinMatch && roleMatch;
     });
 
+    // Apply search filter
     const searchFiltered = filtered.filter((attendee) =>
       attendee.first_name.toLowerCase().includes(search.toLowerCase())
     );
@@ -94,11 +104,16 @@ function AllAttendee(props) {
     currentPage * itemsPerPage
   );
 
-  const exportToFilteredExcel = () => {
-    const worksheet = XLSX.utils.json_to_sheet(filteredAttendees);
+  const exportToExcel = () => {
+    // Convert attendee data to Excel worksheet
+    const worksheet = XLSX.utils.json_to_sheet(excelAttendees);
+
+    // Create a workbook and add the worksheet to it
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Attendees");
-    XLSX.writeFile(workbook, "filtered_attendee_list.xlsx");
+
+    // Export the workbook to Excel file
+    XLSX.writeFile(workbook, "attendee_list.xlsx");
   };
 
   const capitalizeWord = (str) => {
@@ -422,7 +437,7 @@ function AllAttendee(props) {
               <div className="col-12 col-lg-3">
                 {attendees.length > 0 && (
                   <button
-                    onClick={exportToFilteredExcel}
+                    onClick={exportToExcel}
                     className="btn btn-success"
                     style={{
                       color: "white",

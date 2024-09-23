@@ -8,7 +8,9 @@ const CheckInForm = (props) => {
   const queryParams = new URLSearchParams(props.location.search);
   const eventUUID = queryParams.get('eventuuid');
   const [event, setEvent] = useState({});
-  const [eventTitle, setEventTitle] = useState('')
+  const [eventTitle, setEventTitle] = useState('');
+  const [userID, setUserID] = useState(null);
+  const [eventID, setEventID] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -27,7 +29,9 @@ const CheckInForm = (props) => {
     axios.get(`https://api.klout.club/api/events/${eventUUID}`).then((res) => {
       if (res.data.status === 200) {
         setEvent(res.data.data);
-        setEventTitle(res.data.data.title)
+        setUserID(res.data.data.user_id);
+        setEventID(res.data.data.id);
+        setEventTitle(res.data.data.title);
       }
     });
   }, [eventUUID]);
@@ -62,7 +66,6 @@ const CheckInForm = (props) => {
         }
       })
         .then((res) => {
-          console.log(res)
           if (res.data.status) {
             setOtpSent(true); 
           }
@@ -84,7 +87,7 @@ const CheckInForm = (props) => {
         .then((res) => {
           if (res.data.data) {
             setIsVerified(true);
-            axios.post('https://app.klout.club/api/organiser/v1/event-checkin/existing-user', { mobile: formData.mobile }, {
+            axios.post('https://app.klout.club/api/organiser/v1/event-checkin/existing-user', { mobile: formData.mobile*1, eventID, userID }, {
               headers: {
                 'Content-Type': 'application/json'
               }
@@ -115,7 +118,6 @@ const CheckInForm = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate() && isVerified) {
-      console.log(formData)
       axios.post('https://app.klout.club/api/organiser/v1//event-checkin/check-in', formData, {
         headers: {
           'Content-Type': 'application/json'
@@ -123,6 +125,7 @@ const CheckInForm = (props) => {
       }).then((res) => {
         if (res.data.status === true) {
           axios.post('https://api.klout.club/api/accept_decline_event_invitation', { 
+            user_id: userID,
             event_uuid: eventUUID,
             email: formData.email,
             phone_number: formData.mobile,
